@@ -2013,6 +2013,14 @@ video {
       .hub-speaker:hover { border-color:var(--hub-blue); background:var(--hub-tint); }
       .hub-speaker svg { width:20px; height:20px; }
 
+      /* --- pisanie/mowienie: dwa przyciski odtwarzania, normalny i wolniejszy --- */
+      .hub-writing-speakers { flex-shrink:0; display:flex; flex-direction:column; gap:8px; align-items:center; }
+      .hub-speaker-slow { position:relative; width:40px; height:40px; }
+      .hub-speaker-slow-badge { position:absolute; bottom:-7px; left:50%; transform:translateX(-50%);
+                                 font-family:'Plus Jakarta Sans', Arial, sans-serif; font-size:9px; font-weight:800;
+                                 line-height:1; background:var(--hub-blue); color:#fff; border-radius:6px;
+                                 padding:2px 4px; white-space:nowrap; }
+
       /* --- zdania --- */
       .hub-sent { border:1px solid var(--hub-line); border-radius:12px; padding:14px 16px; margin-bottom:12px; }
       .hub-sent-word { font-family:'Plus Jakarta Sans', Arial, sans-serif; font-size:16px; font-weight:800;
@@ -4987,10 +4995,13 @@ video {
                     escapeHtml(grp.label) + (grp.dateLabel ? ' &middot; ' + escapeHtml(grp.dateLabel) : '') + '</summary>';
                 var body = grp.items.map(function (w) {
                     var flatIdx = WRITING.indexOf(w);
-                    var speaker = speechSupported
-                        ? '<button type="button" class="hub-speaker" data-hub-writing-speak="' + flatIdx + '" aria-label="Pos&#322;uchaj tekstu">' + SPEAKER_SVG + '</button>'
+                    var speakers = speechSupported
+                        ? '<span class="hub-writing-speakers">' +
+                          '<button type="button" class="hub-speaker" data-hub-writing-speak="' + flatIdx + '" aria-label="Pos&#322;uchaj tekstu">' + SPEAKER_SVG + '</button>' +
+                          '<button type="button" class="hub-speaker hub-speaker-slow" data-hub-writing-speak-slow="' + flatIdx + '" aria-label="Pos&#322;uchaj wolniej">' + SPEAKER_SVG + '<span class="hub-speaker-slow-badge">0.75x</span></button>' +
+                          '</span>'
                         : '';
-                    return '<div class="hub-pron">' + speaker +
+                    return '<div class="hub-pron">' + speakers +
                         '<div class="hub-pron-body">' +
                         (w.title ? '<p class="hub-pron-word">' + escapeHtml(w.title) + '</p>' : '') +
                         '<p class="hub-msg-body">' + escapeAndLinkify(w.text || '') + '</p>' +
@@ -5000,11 +5011,19 @@ video {
             }).join('');
 
             box.addEventListener('click', function (e) {
-                var btn = e.target.closest ? e.target.closest('[data-hub-writing-speak]') : null;
-                if (!btn) return;
-                btn.blur();
-                var item = WRITING[parseInt(btn.getAttribute('data-hub-writing-speak'), 10)];
-                if (item) speak(item.text, 'en-GB', 0.75);
+                var normalBtn = e.target.closest ? e.target.closest('[data-hub-writing-speak]') : null;
+                var slowBtn = e.target.closest ? e.target.closest('[data-hub-writing-speak-slow]') : null;
+                if (slowBtn) {
+                    slowBtn.blur();
+                    var slowItem = WRITING[parseInt(slowBtn.getAttribute('data-hub-writing-speak-slow'), 10)];
+                    if (slowItem) speak(slowItem.text, 'en-GB', 0.75);
+                    return;
+                }
+                if (normalBtn) {
+                    normalBtn.blur();
+                    var item = WRITING[parseInt(normalBtn.getAttribute('data-hub-writing-speak'), 10)];
+                    if (item) speak(item.text, 'en-GB', 0.9);
+                }
             });
         }
 
