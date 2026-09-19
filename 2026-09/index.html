@@ -2151,6 +2151,7 @@ video {
             <button type="button" class="hub-nav-btn" data-hub-nav="media">&#127909; Artyku&#322;y/Wideo</button>
             <button type="button" class="hub-nav-btn" data-hub-nav="verbs">&#128260; Czasowniki</button>
             <button type="button" class="hub-nav-btn" data-hub-nav="pronunciation">&#128266; Wymowa</button>
+            <button type="button" class="hub-nav-btn" data-hub-nav="writing">&#128483;&#65039; Pisanie/M&oacute;wienie</button>
             <button type="button" class="hub-nav-btn" data-hub-nav="sentences">&#9997;&#65039; Zdania</button>
         </nav>
         <!-- === HUB MODULE - END (nav) === -->
@@ -2199,6 +2200,11 @@ video {
                             <span class="tg-choice-icon">💻</span>
                             <span class="tg-choice-label">Test Interaktywny</span>
                         </button>
+                        <!-- Widoczny tylko gdy window.TGP_HOST === 'teacher-app' (aplikacja nauczyciela, Etap Z2) -->
+                        <button id="tg-assign-btn" onclick="handleFreezeAssignment()" class="tg-choice hidden">
+                            <span class="tg-choice-icon">📋</span>
+                            <span class="tg-choice-label">Zadaj jako zadanie</span>
+                        </button>
                     </div>
                     <div class="text-center mt-6">
                         <button onclick="abortToDashboard()" class="tg-link">← Abort to Dashboard</button>
@@ -2234,7 +2240,11 @@ video {
                     <span id="student-header-name" class="font-display font-bold text-indigo-900 text-base hidden md:inline-block">Student</span>
                     <span id="student-xp" class="ml-2 font-display font-bold text-indigo-700 bg-white px-4 py-1.5 rounded-full border border-indigo-200 tracking-widest uppercase transition-all text-xs">0 XP</span>
                 </div>
-                <button onclick="abortToDashboard()" class="tg-link">Abort</button>
+                <div class="flex items-center gap-3">
+                    <!-- Widoczny tylko w trybie zadania (window.TGP_ASSIGNMENT) z ustawionym secondsPerQuestion -->
+                    <span id="assignment-timer" class="hidden font-display font-bold text-red-600 bg-white px-4 py-1.5 rounded-full border border-red-200 tracking-widest uppercase text-xs"></span>
+                    <button id="tg-abort-btn" onclick="abortToDashboard()" class="tg-link">Abort</button>
+                </div>
             </div>
             <div class="w-full bg-indigo-100 h-1.5"><div id="progress-bar-fill" class="tg-progress-fill h-1.5 transition-all duration-300" style="width: 0%"></div></div>
             <div class="w-full flex justify-end px-6 md:px-8 pt-1.5"><span id="progress-fraction" class="text-[11px] font-display font-bold text-indigo-400 tracking-widest"></span></div>
@@ -2446,6 +2456,27 @@ video {
             </div>
         </section>
         <!-- === HUB MODULE - END (pronunciation view) === -->
+        <!-- === HUB MODULE - START (writing/speaking view) === -->
+        <section id="hub-writing-view" class="hidden no-print flex-grow flex items-start justify-center relative z-20">
+            <div class="hub-shell">
+                <div class="hub-topbar"></div>
+                <div class="hub-inner">
+
+                    <div class="hub-head">
+                        <h2 class="hub-title">Pisanie/M&oacute;wienie</h2>
+                        <p class="hub-tagline">Teksty do przeczytania na g&#322;os albo do napisania samodzielnie.</p>
+                    </div>
+
+                    <div id="hub-writing-list"></div>
+
+                    <div class="hub-footer">
+                        <button type="button" class="hub-link-btn" data-hub-nav="home">&larr; Powr&oacute;t</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!-- === HUB MODULE - END (writing/speaking view) === -->
         <!-- === HUB MODULE - START (sentences view) === -->
         <section id="hub-sentences-view" class="hidden no-print flex-grow flex items-start justify-center relative z-20">
             <div class="hub-shell">
@@ -2643,6 +2674,96 @@ video {
                                     "sentenceWithGap": "All the [gap] in this room is made of wood.",
                                     "firstLetterHint": "f"
                         }
+            ],
+            "Lekcja 2 (19.09)": [
+                        {
+                                    "word": "breakfast",
+                                    "translation": "śniadanie",
+                                    "definition": "the meal you eat in the morning",
+                                    "pos": "n",
+                                    "sentenceWithGap": "I always eat a big [gap] before school.",
+                                    "firstLetterHint": "b"
+                        },
+                        {
+                                    "word": "eat",
+                                    "translation": "jeść",
+                                    "definition": "to put food in your mouth and swallow it",
+                                    "pos": "v",
+                                    "sentenceWithGap": "We usually [gap] dinner together as a family.",
+                                    "firstLetterHint": "e"
+                        },
+                        {
+                                    "word": "get dressed",
+                                    "translation": "ubierać się",
+                                    "definition": "to put your clothes on",
+                                    "pos": "phr",
+                                    "sentenceWithGap": "It only takes me five minutes to [gap] in the morning.",
+                                    "firstLetterHint": "g"
+                        },
+                        {
+                                    "word": "get back home",
+                                    "translation": "wracać do domu",
+                                    "definition": "to arrive back at your house after being somewhere else",
+                                    "pos": "phr",
+                                    "sentenceWithGap": "I usually [gap] at around four in the afternoon.",
+                                    "firstLetterHint": "g"
+                        },
+                        {
+                                    "word": "do homework",
+                                    "translation": "odrabiać zadanie domowe",
+                                    "definition": "to complete the school tasks a teacher has given you",
+                                    "pos": "phr",
+                                    "sentenceWithGap": "I try to [gap] straight after school.",
+                                    "firstLetterHint": "d"
+                        },
+                        {
+                                    "word": "play games",
+                                    "translation": "grać w gry",
+                                    "definition": "to spend time playing video games",
+                                    "pos": "phr",
+                                    "sentenceWithGap": "In the evening I like to [gap] on my console.",
+                                    "firstLetterHint": "p"
+                        },
+                        {
+                                    "word": "dinner",
+                                    "translation": "obiad / kolacja",
+                                    "definition": "the main meal eaten in the evening",
+                                    "pos": "n",
+                                    "sentenceWithGap": "We have [gap] at five o'clock every day.",
+                                    "firstLetterHint": "d"
+                        },
+                        {
+                                    "word": "take a shower",
+                                    "translation": "brać prysznic",
+                                    "definition": "to wash your whole body standing under running water",
+                                    "pos": "phr",
+                                    "sentenceWithGap": "I always [gap] before I go to bed.",
+                                    "firstLetterHint": "t"
+                        },
+                        {
+                                    "word": "then",
+                                    "translation": "potem, wtedy",
+                                    "definition": "next, after that",
+                                    "pos": "adv",
+                                    "sentenceWithGap": "I have breakfast and [gap] brush my teeth.",
+                                    "firstLetterHint": "t"
+                        },
+                        {
+                                    "word": "after that",
+                                    "translation": "potem, następnie",
+                                    "definition": "next, following the thing just mentioned",
+                                    "pos": "phr",
+                                    "sentenceWithGap": "I take a shower. [gap], I watch TV until bedtime.",
+                                    "firstLetterHint": "a"
+                        },
+                        {
+                                    "word": "put on",
+                                    "translation": "zakładać (ubranie)",
+                                    "definition": "to place a piece of clothing onto your body",
+                                    "pos": "v",
+                                    "sentenceWithGap": "It's cold outside, so [gap] your jacket.",
+                                    "firstLetterHint": "p"
+                        }
             ]
 };
 
@@ -2655,8 +2776,8 @@ video {
         "teacherWhatsApp": "48506152270",
         "storageKey": "hub_marcel-h_2026-09",
         "studentKey": "hub_marcel-h",
-        "stamp": "aktualizacja po lekcji 1, 12.09.2026",
-        "lastLessonPhrase": "lekcji 1",
+        "stamp": "aktualizacja po lekcji 2, 19.09.2026",
+        "lastLessonPhrase": "lekcji 2",
         "lessons": [
                 {
                         "label": "Lekcja 1",
@@ -2664,6 +2785,13 @@ video {
                         "categoryKey": "Lekcja 1 (12.09)",
                         "vocabCount": 8,
                         "topic": ""
+                },
+                {
+                        "label": "Lekcja 2",
+                        "dateLabel": "19.09.2026",
+                        "categoryKey": "Lekcja 2 (19.09)",
+                        "vocabCount": 11,
+                        "topic": "Opis codziennej rutyny - co robimy w poniedziałek, krok po kroku"
                 }
         ],
         "grammar": [
@@ -2702,9 +2830,33 @@ video {
                         "items": [],
                         "explanation": "Łatwo pomylić wymowę liczby 30 i 13 - akcent pada na inną sylabę (THIR-ty vs thir-TEEN).",
                         "links": []
+                },
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "19.09.2026",
+                        "topic": "Present Simple vs Present Continuous - powtórka i test",
+                        "mistake": "",
+                        "correction": "",
+                        "items": [],
+                        "explanation": "Test sprawdzający rozróżnienie między Present Simple a Present Continuous.",
+                        "links": [
+                                {
+                                        "label": "Unit 1 - Exercise 1 - Present simple and continuous | Solutions | Oxford University Press",
+                                        "url": "https://elt.oup.com/student/solutions/preint/grammar/grammar_01_012e?srsltid=AU7gw4UW272hk4kDhnK1hnTuTGoJ8SPCCWrKA3PFeXJWgwMIkhCKkJZY&cc=pl&selLanguage=pl",
+                                        "type": "test"
+                                }
+                        ]
                 }
         ],
-        "homework": [],
+        "homework": [
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "19.09.2026",
+                        "label": "Clothes - Wordwall",
+                        "url": "https://wordwall.net/pl/resource/26304641/angielski/clothes",
+                        "type": "website"
+                }
+        ],
         "media": [],
         "pronunciation": [
                 {
@@ -2712,6 +2864,14 @@ video {
                         "word": "occasionally",
                         "translation": "od czasu do czasu",
                         "note": ""
+                }
+        ],
+        "writingSpeaking": [
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "19.09.2026",
+                        "title": "Przeczytaj na głos: rutyna dnia",
+                        "text": "On Monday, I wake up at 6 a.m. My mum makes breakfast. We eat together. I put on my t-shirt, shorts and shoes. I brush my teeth and go to school. My lessons start at 8 o'clock. School finishes at quarter past three. I get back home at 4 p.m. and play my games console to relax. I occasionally do homework. We have dinner at 5 p.m. I take a shower at 7 p.m. and watch TV. At 10 o'clock it's time for bed."
                 }
         ],
         "distractors": [
@@ -2779,6 +2939,26 @@ video {
                         "word": "responsible for",
                         "translation": "odpowiedzialny (za coś)",
                         "pos": "phr"
+                },
+                {
+                        "word": "arrive",
+                        "translation": "przybywać",
+                        "pos": "v"
+                },
+                {
+                        "word": "clean",
+                        "translation": "sprzątać",
+                        "pos": "v"
+                },
+                {
+                        "word": "cook",
+                        "translation": "gotować",
+                        "pos": "v"
+                },
+                {
+                        "word": "forget",
+                        "translation": "zapominać",
+                        "pos": "v"
                 }
         ],
         "priorityVerbs": [],
@@ -2831,6 +3011,72 @@ video {
                         "lessons": [
                                 "Lekcja 1"
                         ]
+                },
+                {
+                        "word": "breakfast",
+                        "lessons": [
+                                "Lekcja 2"
+                        ]
+                },
+                {
+                        "word": "eat",
+                        "lessons": [
+                                "Lekcja 2"
+                        ]
+                },
+                {
+                        "word": "get dressed",
+                        "lessons": [
+                                "Lekcja 2"
+                        ]
+                },
+                {
+                        "word": "get back home",
+                        "lessons": [
+                                "Lekcja 2"
+                        ]
+                },
+                {
+                        "word": "do homework",
+                        "lessons": [
+                                "Lekcja 2"
+                        ]
+                },
+                {
+                        "word": "play games",
+                        "lessons": [
+                                "Lekcja 2"
+                        ]
+                },
+                {
+                        "word": "dinner",
+                        "lessons": [
+                                "Lekcja 2"
+                        ]
+                },
+                {
+                        "word": "take a shower",
+                        "lessons": [
+                                "Lekcja 2"
+                        ]
+                },
+                {
+                        "word": "then",
+                        "lessons": [
+                                "Lekcja 2"
+                        ]
+                },
+                {
+                        "word": "after that",
+                        "lessons": [
+                                "Lekcja 2"
+                        ]
+                },
+                {
+                        "word": "put on",
+                        "lessons": [
+                                "Lekcja 2"
+                        ]
                 }
         ],
         "sentenceCount": 5,
@@ -2839,6 +3085,11 @@ video {
                         "lessonLabel": "Lekcja 1",
                         "dateLabel": "12.09.2026",
                         "text": "Warto rozejrzeć się po Hubie - zrobić fiszki i test z Unitu 1 tego podręcznika. W notatce czekają linki: zadania na *to be* i *have got*, filmik o *Present Simple* i *Present Continuous*, i krótki artykuł o przysłówkach częstotliwości.\n\nTo pierwszy miesiąc pracy z tym narzędziem, więc na razie jest tu tylko jedna lekcja - kolejne będą dochodzić po każdych zajęciach.\n\nWarto zacząć od rozejrzenia się po narzędziu. Najlepiej działa na komputerze, a odsłuchiwanie wymowy brzmi najlepiej w przeglądarce Google Chrome. To wersja beta, więc wszelkie uwagi są mile widziane.\n\nPo każdej lekcji pojawia się nowy plik z dopisanym materiałem. Zawsze otwieramy ten najnowszy, poprzednie lekcje już się w nim znajdują. Datę aktualizacji widać na dole tego ekranu.\n\nNarzędzie trafia najpierw do osób, które uczą się także między lekcjami i powtarzają zadany materiał. Właśnie tam najszybciej widać, co działa, a co trzeba poprawić."
+                },
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "19.09.2026",
+                        "text": "Warto zrobić opis osoby ze zdjęcia - jakie ubranie ma na sobie - i przesłać do sprawdzenia. Dobrze też zrobić zadanie na Present Simple i Present Continuous oraz regularnie ćwiczyć czasowniki nieregularne."
                 }
         ]
 };
@@ -2905,6 +3156,188 @@ video {
             document.getElementById('student-name-input').addEventListener('input', (e) => {
                 document.getElementById('start-test-btn').disabled = e.target.value.trim().length === 0;
             });
+
+            // Tryb zadania (Etap Z2, PWA): globale wstrzykiwane wyłącznie przez
+            // engine-adapter.js, w standalone TGP_*.html z build_tgp.mjs nie
+            // istnieją i te dwa if-y nigdy się nie wykonują.
+            if (window.TGP_HOST === 'teacher-app') {
+                const assignBtn = document.getElementById('tg-assign-btn');
+                if (assignBtn) assignBtn.classList.remove('hidden');
+            }
+            if (isAssignmentMode()) {
+                initAssignmentMode();
+            }
+        }
+
+        // ==========================================
+        // TRYB ZADANIA (Etap Z2) - nauczyciel zamraża test, uczeń go rozwiązuje
+        // ==========================================
+        function isAssignmentMode() {
+            return !!(window.TGP_ASSIGNMENT && Array.isArray(window.TGP_ASSIGNMENT.questions));
+        }
+
+        // Pola stanu z jednego rozwiązania - usuwane przy zamrażaniu, bo mają
+        // się wyzerować na starcie u każdego ucznia (patrz resetTaskRuntimeState).
+        function stripQuestionForFreeze(task) {
+            const clone = { ...task };
+            delete clone.isCompleted; delete clone.earnedXP; delete clone.userSelectedIdx;
+            delete clone.userText; delete clone.usedHint; delete clone.usedAnswer;
+            delete clone.attempts; delete clone.completedConnections; delete clone.matchStateMemory;
+            delete clone.timedOut;
+            return clone;
+        }
+
+        function buildAnswerKeyEntry(task) {
+            const entry = { globalIndex: task.globalIndex, type: task.assignedTaskType };
+            if (task.assignedTaskType === 'abcd_word' || task.assignedTaskType === 'abcd_gap') {
+                entry.correct = task.correctIndex;
+            } else if (task.assignedTaskType === 'unscramble' || task.assignedTaskType === 'gap_hint') {
+                entry.correct = task.word;
+            } else if (task.assignedTaskType === 'match_trans' || task.assignedTaskType === 'match_def') {
+                entry.correct = task.correctMatchKey;
+            }
+            return entry;
+        }
+
+        // Wywołane wyłącznie z przycisku "Zadaj jako zadanie", widocznego tylko
+        // gdy window.TGP_HOST === 'teacher-app'. currentTest jest już wypełniony
+        // przez prepareSingleTestData() (handleGenerateTest), bo ten przycisk
+        // siedzi na path-selection-view, czyli po wygenerowaniu testu.
+        function handleFreezeAssignment() {
+            const questions = currentTest.map(stripQuestionForFreeze);
+            const answerKey = currentTest.map(buildAnswerKeyEntry);
+            const meta = {
+                subtitle: CONFIG.subtitle,
+                categories: getSelectedCategoryNames(),
+                taskTypes: getSelectedTaskTypeNames(),
+                totalQuestions: currentTest.length
+            };
+            window.parent.postMessage({ type: 'tgp:freeze', questions, answerKey, meta }, '*');
+        }
+
+        // Ten sam reset co startInteractiveTest() na zwykłej ścieżce - wspólna
+        // funkcja, żeby zamrożone (odarte ze stanu) pytania ucznia odtworzyły
+        // dokładnie ten sam stan startowy, jaki dostaje zwykły interaktywny test.
+        function resetTaskRuntimeState(q) {
+            q.isCompleted = false; q.earnedXP = 0; q.userSelectedIdx = null; q.userText = "";
+            q.usedHint = false; q.usedAnswer = false; q.timedOut = false;
+            if (q.assignedTaskType && q.assignedTaskType.indexOf('match') === 0) {
+                q.attempts = 1; q.completedConnections = []; q.matchStateMemory = { selectedLeft: null, selectedRight: null, connections: [] };
+            }
+        }
+
+        let assignmentTabLeaves = 0;
+        let assignmentStartedAt = null;
+        let assignmentTimerInterval = null;
+        let assignmentTimerRemaining = 0;
+
+        function initAssignmentMode() {
+            const a = window.TGP_ASSIGNMENT;
+            document.getElementById('config-view').classList.add('hidden');
+            document.getElementById('main-header').classList.add('hidden');
+
+            studentName = String(a.studentName || 'Uczeń');
+            currentTest = a.questions.map(q => ({ ...q }));
+            currentTest.forEach(resetTaskRuntimeState);
+            currentQuestionIndex = 0;
+            studentXP = 0;
+            assignmentStartedAt = new Date().toISOString();
+            assignmentTabLeaves = 0;
+
+            document.getElementById('quiz-view').classList.remove('hidden');
+            document.getElementById('student-header-name').innerText = studentName;
+            document.getElementById('student-avatar').innerText = (studentName[0] || 'U').toUpperCase();
+            document.getElementById('student-xp').innerText = "0 XP";
+
+            // Tryb ucznia: brak drogi powrotu do config-view/path-selection-view
+            // (generator, druk, klucz odpowiedzi) - przycisk "Abort" nie istnieje
+            // w tym trybie, nie tylko jest ukryty (patrz też early-return w
+            // abortToDashboard/triggerDirectPrint/buildPrintDOM).
+            const abortBtn = document.getElementById('tg-abort-btn');
+            if (abortBtn) abortBtn.remove();
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) assignmentTabLeaves++;
+            });
+
+            renderQuestion();
+        }
+
+        function clearAssignmentTimer() {
+            if (assignmentTimerInterval) { clearInterval(assignmentTimerInterval); assignmentTimerInterval = null; }
+            const el = document.getElementById('assignment-timer');
+            if (el) el.classList.add('hidden');
+        }
+
+        function startAssignmentTimerFor(task) {
+            const seconds = window.TGP_ASSIGNMENT && window.TGP_ASSIGNMENT.secondsPerQuestion;
+            if (!seconds || task.isCompleted) return;
+            const multiplier = (task.assignedTaskType && task.assignedTaskType.indexOf('match') === 0) ? 2 : 1;
+            assignmentTimerRemaining = Math.round(seconds * multiplier);
+            const el = document.getElementById('assignment-timer');
+            if (!el) return;
+            el.classList.remove('hidden');
+            el.innerText = `⏱ ${assignmentTimerRemaining}s`;
+            assignmentTimerInterval = setInterval(() => {
+                assignmentTimerRemaining--;
+                if (assignmentTimerRemaining <= 0) {
+                    clearInterval(assignmentTimerInterval); assignmentTimerInterval = null;
+                    el.innerText = `⏱ 0s`;
+                    handleAssignmentTimeExpired(task);
+                } else {
+                    el.innerText = `⏱ ${assignmentTimerRemaining}s`;
+                }
+            }, 1000);
+        }
+
+        function handleAssignmentTimeExpired(task) {
+            if (task.isCompleted) return;
+            task.isCompleted = true;
+            task.earnedXP = 0;
+            task.timedOut = true;
+            studentXP = currentTest.reduce((acc, curr) => acc + (curr.earnedXP || 0), 0);
+            document.getElementById('student-xp').innerText = `${studentXP} XP`;
+            if (currentQuestionIndex === currentTest.length - 1) {
+                finishTest();
+            } else {
+                currentQuestionIndex++;
+                renderQuestion();
+            }
+        }
+
+        function buildAnswerForTask(task) {
+            const base = {
+                globalIndex: task.globalIndex,
+                type: task.assignedTaskType,
+                usedHint: !!task.usedHint,
+                usedAnswer: !!task.usedAnswer,
+                attempts: task.attempts || 1,
+                timedOut: !!task.timedOut
+            };
+            if (task.assignedTaskType === 'abcd_word' || task.assignedTaskType === 'abcd_gap') {
+                base.selectedIdx = (task.userSelectedIdx === undefined) ? null : task.userSelectedIdx;
+            } else if (task.assignedTaskType === 'unscramble' || task.assignedTaskType === 'gap_hint') {
+                base.text = task.userText || '';
+            } else if (task.assignedTaskType === 'match_trans' || task.assignedTaskType === 'match_def') {
+                base.connections = (task.completedConnections || []).map(c => {
+                    const leftIdx = task.frozenLeft.indexOf(c.leftWord);
+                    const rightIdx = task.frozenRight.findIndex(r => r.parentWord === c.rightWordParent);
+                    return `${leftIdx + 1}${['A', 'B', 'C', 'D'][rightIdx]}`;
+                });
+            }
+            return base;
+        }
+
+        function submitAssignment() {
+            const answers = currentTest.map(buildAnswerForTask);
+            window.parent.postMessage({
+                type: 'tgp:submit',
+                answers,
+                tabLeaves: assignmentTabLeaves,
+                startedAt: assignmentStartedAt,
+                finishedAt: new Date().toISOString(),
+                clientScore: studentXP
+            }, '*');
         }
 
         // Helpers
@@ -2918,13 +3351,24 @@ video {
             return array;
         }
 
+        // Symmetric near-synonym check: true if either word's excludeDistractors
+        // list names the other. Prevents e.g. "insulted" and "offended" from ever
+        // being served as each other's wrong-answer option in abcd-style tasks,
+        // where (unlike gap_hint) there is no letter hint to help tell them apart.
+        function isSynonymPair(a, b) {
+            if ((a.excludeDistractors || []).includes(b.word)) return true;
+            if ((b.excludeDistractors || []).includes(a.word)) return true;
+            return false;
+        }
+
         function getDistractorStrings(excludeObj, fieldName, count) {
-            const filtered = allWordsData.filter(item => item.word !== excludeObj.word);
+            const filtered = allWordsData.filter(item => item.word !== excludeObj.word && !isSynonymPair(excludeObj, item));
             return shuffle(filtered).slice(0, count).map(item => item[fieldName]);
         }
 
         function getDistractorObjects(excludeWord, count) {
-            const filtered = allWordsData.filter(item => item.word !== excludeWord);
+            const excludeObj = allWordsData.find(item => item.word === excludeWord);
+            const filtered = allWordsData.filter(item => item.word !== excludeWord && (!excludeObj || !isSynonymPair(excludeObj, item)));
             return shuffle(filtered).slice(0, count);
         }
 
@@ -3146,8 +3590,12 @@ video {
         }
 
         function abortToDashboard() {
+            // Tryb ucznia: config-view/path-selection-view (generator, druk,
+            // klucz odpowiedzi) nigdy nie mają się odsłonić - blokada w samej
+            // funkcji, nie tylko przez ukrycie/usunięcie przycisku.
+            if (isAssignmentMode()) return;
             executeBulletproofStateTeardown();
-            
+
             document.getElementById('path-selection-view').classList.add('hidden');
             document.getElementById('quiz-view').classList.add('hidden');
             document.getElementById('student-start-view').classList.add('hidden');
@@ -3157,6 +3605,8 @@ video {
 
         // STEP 3A: DIRECT PRINT (always includes answer key on a separate page)
         function triggerDirectPrint() {
+            // Tryb ucznia: brak drogi do druku z kluczem odpowiedzi.
+            if (isAssignmentMode()) return;
             buildPrintDOM(); // Build print DOM with answer key always included
             
             // Use standard timeout to ensure DOM paints before print dialog locks thread
@@ -3183,11 +3633,7 @@ video {
             currentQuestionIndex = 0;
             
             // Safety clean view states if they were somehow manipulated
-            currentTest.forEach(q => { 
-                q.isCompleted = false; q.earnedXP = 0; q.userSelectedIdx = null; q.userText = ""; 
-                q.usedHint = false; q.usedAnswer = false;
-                if(q.attempts !== undefined) { q.attempts = 1; q.completedConnections = []; q.matchStateMemory = { selectedLeft: null, selectedRight: null, connections: [] }; }
-            });
+            currentTest.forEach(resetTaskRuntimeState);
             
             document.getElementById('student-start-view').classList.add('hidden');
             document.getElementById('main-header').classList.add('hidden');
@@ -3214,10 +3660,12 @@ video {
             navContainer.innerHTML = '';
             feedbackContainer.innerHTML = '';
             feedbackContainer.className = 'mt-8 text-center font-extrabold text-2xl relative z-20 hidden w-full';
-            
+
             if (activeResizeListener) {
                 window.removeEventListener('resize', activeResizeListener);
             }
+
+            clearAssignmentTimer();
 
             const task = currentTest[currentQuestionIndex];
             
@@ -3230,8 +3678,8 @@ video {
             document.getElementById('progress-bar-fill').style.width = `${((currentQuestionIndex) / currentTest.length) * 100}%`;
             document.getElementById('progress-fraction').innerText = `${Math.round((currentQuestionIndex / currentTest.length) * 100)}%`;
 
-            // DYNAMIC BUTTON GENERATION: BACK
-            if (currentQuestionIndex > 0) {
+            // DYNAMIC BUTTON GENERATION: BACK (hidden in assignment mode - prevents timer-reset cheating)
+            if (currentQuestionIndex > 0 && !isAssignmentMode()) {
                 const backBtn = document.createElement('button');
                 backBtn.innerText = "← Back";
                 // SYMMETRICAL STYLING
@@ -3251,6 +3699,10 @@ video {
             // DYNAMIC BUTTON GENERATION: NEXT (If already completed)
             if (task.isCompleted) {
                 buildNextButton(navContainer, task);
+            }
+
+            if (isAssignmentMode()) {
+                startAssignmentTimerFor(task);
             }
         }
 
@@ -3742,6 +4194,9 @@ video {
         // 6. HIGH-FIDELITY PRINT RENDERING (SSOT STRICT SCORING)
         // ==========================================
         function buildPrintDOM() {
+            // Tryb ucznia: klucz odpowiedzi/wydruk nie mają się zbudować,
+            // nawet gdy funkcja jest wywołana bezpośrednio z konsoli.
+            if (isAssignmentMode()) return;
             const printContainer = document.getElementById('print-view');
             
             // STRICT 1-TO-1 PAPER SCORING: Total Score MUST equal the exact number of generated questions.
@@ -3796,6 +4251,7 @@ video {
 
         // --- CONGRATULATIONS SCREEN ---
         function finishTest() {
+            clearAssignmentTimer();
             document.getElementById('progress-bar-fill').style.width = '100%';
             document.getElementById('progress-fraction').innerText = '100%';
             document.getElementById('section-header').innerHTML = `<h2 class="tg-title">TEST COMPLETED</h2>`;
@@ -3828,6 +4284,10 @@ video {
                     <p class="tg-tagline">Test completed. Here is your score.</p>
                 </div>`;
 
+            // Tryb zadania nie ma dashboardu do powrotu - przycisk "Exit to
+            // Dashboard" po prostu się nie renderuje, resztę zostawiamy.
+            const exitBtnHtml = isAssignmentMode() ? '' : `<button type="button" class="tg-cta" id="tg-exit-btn">Exit to Dashboard</button>`;
+
             oContainer.innerHTML = `
                 <div class="tg-summary mt-8">
                     <p class="tg-summary-label">Final Score</p>
@@ -3835,15 +4295,22 @@ video {
                     <span class="tg-result-badge ${badgeClass}">${percentage}%</span>
                 </div>
                 <div class="tg-actions-row">
-                    <button type="button" class="tg-cta" id="tg-exit-btn">Exit to Dashboard</button>
+                    ${exitBtnHtml}
                     <button type="button" class="tg-cta tg-cta-alt" id="tg-save-btn">Save</button>
                     <button type="button" class="tg-cta tg-cta-alt" id="tg-share-btn">Share</button>
                 </div>
                 <p class="tg-share-status" id="tg-share-status"></p>`;
 
-            document.getElementById('tg-exit-btn').onclick = abortToDashboard;
+            const exitBtn = document.getElementById('tg-exit-btn');
+            if (exitBtn) exitBtn.onclick = abortToDashboard;
             document.getElementById('tg-save-btn').onclick = () => saveResult(studentXP, maxXP, percentage, badgeClass, message);
             document.getElementById('tg-share-btn').onclick = () => shareResultOnly(studentXP, maxXP, percentage, badgeClass, message);
+
+            // Silnik nie robi żadnych fetchy - tylko postMessage do rodzica
+            // (aplikacja nauczyciela/PWA), zgodnie z zasadą offline-first.
+            if (isAssignmentMode()) {
+                submitAssignment();
+            }
         }
 
         // === SAVE / SHARE RESULT (mirrors Fiszki_*.html) ===============
@@ -3991,6 +4458,7 @@ video {
         var HOMEWORK = HUB.homework || [];
         var MEDIA = HUB.media || [];
         var PRONUNCIATION = HUB.pronunciation || [];
+        var WRITING = HUB.writingSpeaking || [];
         // Tryb pliku. "month" to hub miesieczny ucznia (slownictwo z jego lekcji,
         // gramatyka, wymowa, zdania, czasowniki). "unit" to strona jednego dzialu
         // z podrecznika: te same fiszki i ten sam test, tylko karmione slownictwem
@@ -4169,11 +4637,12 @@ video {
             media:         'hub-media-view',
             verbs:         'hub-verbs-view',
             pronunciation: 'hub-pronunciation-view',
+            writing:       'hub-writing-view',
             sentences:     'hub-sentences-view'
         };
         var ALL_VIEW_IDS = [
             'hub-home-view', 'flashcards-view', 'config-view',
-            'hub-grammar-view', 'hub-media-view', 'hub-pronunciation-view', 'hub-sentences-view', 'hub-verbs-view',
+            'hub-grammar-view', 'hub-media-view', 'hub-pronunciation-view', 'hub-writing-view', 'hub-sentences-view', 'hub-verbs-view',
             'path-selection-view', 'student-start-view', 'quiz-view'
         ];
 
@@ -4280,6 +4749,7 @@ video {
                 { key: 'media',         icon: '🎬', label: 'Artykuły/Wideo', sub: count(MEDIA.length, 'materiał', 'materiały', 'materiałów') + ' do obejrzenia/przeczytania', count: MEDIA.length },
                 { key: 'verbs',         icon: '🔄', label: 'Czasowniki nieregularne', sub: VERB_ROUND_SIZE + ' na rundę z ' + VERB_BANK.length + ' w banku', count: VERB_BANK.length },
                 { key: 'pronunciation', icon: '🔊', label: 'Wymowa',    sub: count(PRONUNCIATION.length, 'słówko', 'słówka', 'słówek') + ' do posłuchania', count: PRONUNCIATION.length },
+                { key: 'writing',       icon: '🗣️', label: 'Pisanie/Mówienie', sub: count(WRITING.length, 'tekst', 'teksty', 'tekstów') + ' do przeczytania/napisania', count: WRITING.length },
                 { key: 'sentences',     icon: '✍️', label: 'Ułóż zdania', sub: count(SENT_COUNT, 'słówko', 'słówka', 'słówek') + ' z puli ' + SENT_POOL.length + ', losowo', count: SENT_POOL.length }
             ];
             // Kafelek czasownikow inaczej wyszedlby na stronie Unitu aktywny, bo
@@ -4498,6 +4968,32 @@ video {
                 var item = PRONUNCIATION[parseInt(btn.getAttribute('data-hub-speak'), 10)];
                 if (item) speak(item.word, 'en-GB');
             });
+        }
+
+        // ==========================================
+        // Pisanie/Mowienie
+        // ==========================================
+        function renderWriting() {
+            var box = el('hub-writing-list');
+            if (!box) return;
+            var groups = groupByLesson(WRITING);
+            if (!groups.length) {
+                box.innerHTML = '<p class="hub-empty">Na razie brak tekst&oacute;w do przeczytania na g&#322;os ani do napisania.</p>';
+                return;
+            }
+            box.innerHTML = groups.map(function (grp, gi) {
+                var isLast = (gi === groups.length - 1);
+                var head = '<summary class="hub-section-title' + (gi === 0 ? ' is-first' : '') + '">' +
+                    escapeHtml(grp.label) + (grp.dateLabel ? ' &middot; ' + escapeHtml(grp.dateLabel) : '') + '</summary>';
+                var body = grp.items.map(function (w) {
+                    return '<div class="hub-pron">' +
+                        '<div class="hub-pron-body">' +
+                        (w.title ? '<p class="hub-pron-word">' + escapeHtml(w.title) + '</p>' : '') +
+                        '<p class="hub-msg-body">' + escapeAndLinkify(w.text || '') + '</p>' +
+                        '</div></div>';
+                }).join('');
+                return '<details class="hub-lesson-group"' + (isLast ? ' open' : '') + '>' + head + body + '</details>';
+            }).join('');
         }
 
         // ==========================================
@@ -5602,6 +6098,7 @@ video {
                 renderGrammar();
                 renderMedia();
                 renderPronunciation();
+                renderWriting();
 
                 loadSentences();
                 renderSentLessonChips();
