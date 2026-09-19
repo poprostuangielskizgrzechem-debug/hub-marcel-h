@@ -4627,12 +4627,15 @@ video {
         function stopSpeaking() {
             if (!speechSupported) return;
             try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
+            stopWritingPlayback();
         }
 
         var SPEAKER_SVG = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">' +
             '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" ' +
             'd="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M6 9H4a1 1 0 00-1 1v4a1 1 0 001 1h2l4 4V5L6 9z">' +
             '</path></svg>';
+        var PLAY_SVG = '<svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>';
+        var PAUSE_SVG = '<svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>';
 
         // ==========================================
         // Router widokow
@@ -4981,6 +4984,116 @@ video {
         // ==========================================
         // Pisanie/Mowienie
         // ==========================================
+        // Lektor traktuje kropke po skrocie ("6 a.m.") jak zwykla kropke i czyta
+        // dalej bez oddechu, co brzmi jak jedno zdanie bez sensu. Dzielimy tekst
+        // na zdania i odtwarzamy je jako osobne wypowiedzi z krotka przerwa
+        // miedzy nimi - to samo, co naturalna pauza po kropce, tylko wymuszona
+        // recznie zamiast liczyc na to, ze silnik mowy ja doda sam.
+        function splitIntoSentences(text) {
+            var parts = String(text || '').match(/[^.!?]+[.!?]+(\s+|$)/g);
+            if (!parts || !parts.length) {
+                var whole = String(text || '').trim();
+                return whole ? [whole] : [];
+            }
+            return parts.map(function (s) { return s.trim(); }).filter(Boolean);
+        }
+
+        var writingPlayback = null; // {sessionId, itemIdx, rate, sentences, idx, timer, paused, pendingNext}
+        var writingSessionCounter = 0;
+
+        function updateWritingButtons() {
+            var box = el('hub-writing-list');
+            if (!box) return;
+            var activeIdx = writingPlayback ? writingPlayback.itemIdx : null;
+            var isPaused = writingPlayback ? writingPlayback.paused : false;
+            Array.prototype.forEach.call(box.querySelectorAll('[data-hub-writing-playpause]'), function (b) {
+                var idx = parseInt(b.getAttribute('data-hub-writing-playpause'), 10);
+                var isActivePlaying = (idx === activeIdx && !isPaused);
+                b.innerHTML = isActivePlaying ? PAUSE_SVG : PLAY_SVG;
+                b.setAttribute('aria-label', isActivePlaying ? 'Pauza' : 'Odtwórz');
+            });
+        }
+
+        function stopWritingPlayback() {
+            if (writingPlayback && writingPlayback.timer) clearTimeout(writingPlayback.timer);
+            writingPlayback = null;
+            updateWritingButtons();
+        }
+
+        function playWritingSentence() {
+            var wp = writingPlayback;
+            if (!wp) return;
+            var mySession = wp.sessionId;
+            if (wp.idx >= wp.sentences.length) { stopWritingPlayback(); return; }
+            try {
+                var u = new window.SpeechSynthesisUtterance(wp.sentences[wp.idx]);
+                u.lang = 'en-GB';
+                u.rate = wp.rate;
+                if (cachedVoice) u.voice = cachedVoice;
+                u.onend = function () {
+                    if (!writingPlayback || writingPlayback.sessionId !== mySession) return;
+                    writingPlayback.idx++;
+                    // Krotka cisza miedzy zdaniami - to jest ta brakujaca pauza.
+                    writingPlayback.timer = setTimeout(playWritingSentence, 350);
+                };
+                window.speechSynthesis.speak(u);
+            } catch (e) { stopWritingPlayback(); }
+        }
+
+        function startWritingPlayback(itemIdx, rate) {
+            var item = WRITING[itemIdx];
+            if (!item) return;
+            try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
+            if (writingPlayback && writingPlayback.timer) clearTimeout(writingPlayback.timer);
+            writingSessionCounter++;
+            writingPlayback = {
+                sessionId: writingSessionCounter,
+                itemIdx: itemIdx,
+                rate: rate,
+                sentences: splitIntoSentences(item.text),
+                idx: 0,
+                timer: null,
+                paused: false,
+                pendingNext: false
+            };
+            updateWritingButtons();
+            playWritingSentence();
+        }
+
+        function pauseWritingPlayback() {
+            if (!writingPlayback || writingPlayback.paused) return;
+            writingPlayback.paused = true;
+            if (writingPlayback.timer) {
+                clearTimeout(writingPlayback.timer);
+                writingPlayback.timer = null;
+                writingPlayback.pendingNext = true;
+            } else {
+                try { window.speechSynthesis.pause(); } catch (e) { /* ignore */ }
+            }
+            updateWritingButtons();
+        }
+
+        function resumeWritingPlayback() {
+            if (!writingPlayback || !writingPlayback.paused) return;
+            writingPlayback.paused = false;
+            if (writingPlayback.pendingNext) {
+                writingPlayback.pendingNext = false;
+                playWritingSentence();
+            } else {
+                try { window.speechSynthesis.resume(); } catch (e) { /* ignore */ }
+            }
+            updateWritingButtons();
+        }
+
+        function toggleWritingPlayPause(itemIdx) {
+            if (writingPlayback && writingPlayback.itemIdx === itemIdx) {
+                if (writingPlayback.paused) resumeWritingPlayback();
+                else pauseWritingPlayback();
+            } else {
+                startWritingPlayback(itemIdx, writingPlayback ? writingPlayback.rate : 0.9);
+            }
+        }
+
         function renderWriting() {
             var box = el('hub-writing-list');
             if (!box) return;
@@ -4997,6 +5110,7 @@ video {
                     var flatIdx = WRITING.indexOf(w);
                     var speakers = speechSupported
                         ? '<span class="hub-writing-speakers">' +
+                          '<button type="button" class="hub-speaker" data-hub-writing-playpause="' + flatIdx + '" aria-label="Odtw&oacute;rz">' + PLAY_SVG + '</button>' +
                           '<button type="button" class="hub-speaker" data-hub-writing-speak="' + flatIdx + '" aria-label="Pos&#322;uchaj tekstu">' + SPEAKER_SVG + '</button>' +
                           '<button type="button" class="hub-speaker hub-speaker-slow" data-hub-writing-speak-slow="' + flatIdx + '" aria-label="Pos&#322;uchaj wolniej">' + SPEAKER_SVG + '<span class="hub-speaker-slow-badge">0.75x</span></button>' +
                           '</span>'
@@ -5011,18 +5125,22 @@ video {
             }).join('');
 
             box.addEventListener('click', function (e) {
-                var normalBtn = e.target.closest ? e.target.closest('[data-hub-writing-speak]') : null;
+                var playPauseBtn = e.target.closest ? e.target.closest('[data-hub-writing-playpause]') : null;
                 var slowBtn = e.target.closest ? e.target.closest('[data-hub-writing-speak-slow]') : null;
+                var normalBtn = e.target.closest ? e.target.closest('[data-hub-writing-speak]') : null;
+                if (playPauseBtn) {
+                    playPauseBtn.blur();
+                    toggleWritingPlayPause(parseInt(playPauseBtn.getAttribute('data-hub-writing-playpause'), 10));
+                    return;
+                }
                 if (slowBtn) {
                     slowBtn.blur();
-                    var slowItem = WRITING[parseInt(slowBtn.getAttribute('data-hub-writing-speak-slow'), 10)];
-                    if (slowItem) speak(slowItem.text, 'en-GB', 0.75);
+                    startWritingPlayback(parseInt(slowBtn.getAttribute('data-hub-writing-speak-slow'), 10), 0.75);
                     return;
                 }
                 if (normalBtn) {
                     normalBtn.blur();
-                    var item = WRITING[parseInt(normalBtn.getAttribute('data-hub-writing-speak'), 10)];
-                    if (item) speak(item.text, 'en-GB', 0.9);
+                    startWritingPlayback(parseInt(normalBtn.getAttribute('data-hub-writing-speak'), 10), 0.9);
                 }
             });
         }
