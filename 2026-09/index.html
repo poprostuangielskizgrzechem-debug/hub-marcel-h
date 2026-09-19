@@ -2013,13 +2013,17 @@ video {
       .hub-speaker:hover { border-color:var(--hub-blue); background:var(--hub-tint); }
       .hub-speaker svg { width:20px; height:20px; }
 
-      /* --- pisanie/mowienie: dwa przyciski odtwarzania, normalny i wolniejszy --- */
-      .hub-writing-speakers { flex-shrink:0; display:flex; flex-direction:column; gap:8px; align-items:center; }
-      .hub-speaker-slow { position:relative; width:40px; height:40px; }
-      .hub-speaker-slow-badge { position:absolute; bottom:-7px; left:50%; transform:translateX(-50%);
-                                 font-family:'Plus Jakarta Sans', Arial, sans-serif; font-size:9px; font-weight:800;
-                                 line-height:1; background:var(--hub-blue); color:#fff; border-radius:6px;
-                                 padding:2px 4px; white-space:nowrap; }
+      /* --- Teksty: pasek odtwarzacza (Play/Pause, Stop, tempo, przewijanie) --- */
+      .hub-player { display:flex; align-items:center; gap:8px; margin:6px 0 12px; flex-wrap:wrap; }
+      .hub-player-btn { flex-shrink:0; width:36px; height:36px; border-radius:50%; border:1px solid var(--hub-line);
+                     background:#fff; color:var(--hub-blue); cursor:pointer; display:flex;
+                     align-items:center; justify-content:center; transition:all .15s ease; padding:0; }
+      .hub-player-btn:hover { border-color:var(--hub-blue); background:var(--hub-tint); }
+      .hub-player-btn svg { width:18px; height:18px; }
+      .hub-player-rate { width:auto; border-radius:18px; padding:0 12px; font-family:'Plus Jakarta Sans', Arial, sans-serif;
+                          font-size:12px; font-weight:800; }
+      .hub-player-rate.is-active { background:var(--hub-blue); border-color:var(--hub-blue); color:#fff; }
+      .hub-player-seek { flex:1 1 120px; min-width:100px; accent-color:var(--hub-blue); cursor:pointer; }
 
       /* --- zdania --- */
       .hub-sent { border:1px solid var(--hub-line); border-radius:12px; padding:14px 16px; margin-bottom:12px; }
@@ -2159,7 +2163,7 @@ video {
             <button type="button" class="hub-nav-btn" data-hub-nav="media">&#127909; Artyku&#322;y/Wideo</button>
             <button type="button" class="hub-nav-btn" data-hub-nav="verbs">&#128260; Czasowniki</button>
             <button type="button" class="hub-nav-btn" data-hub-nav="pronunciation">&#128266; Wymowa</button>
-            <button type="button" class="hub-nav-btn" data-hub-nav="writing">&#128483;&#65039; Pisanie/M&oacute;wienie</button>
+            <button type="button" class="hub-nav-btn" data-hub-nav="writing">&#128214; Teksty</button>
             <button type="button" class="hub-nav-btn" data-hub-nav="sentences">&#9997;&#65039; Zdania</button>
         </nav>
         <!-- === HUB MODULE - END (nav) === -->
@@ -2471,7 +2475,7 @@ video {
                 <div class="hub-inner">
 
                     <div class="hub-head">
-                        <h2 class="hub-title">Pisanie/M&oacute;wienie</h2>
+                        <h2 class="hub-title">Teksty</h2>
                         <p class="hub-tagline">Teksty do przeczytania na g&#322;os albo do napisania samodzielnie.</p>
                     </div>
 
@@ -4636,6 +4640,7 @@ video {
             '</path></svg>';
         var PLAY_SVG = '<svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>';
         var PAUSE_SVG = '<svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>';
+        var STOP_SVG = '<svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h12v12H6z"></path></svg>';
 
         // ==========================================
         // Router widokow
@@ -4760,7 +4765,7 @@ video {
                 { key: 'media',         icon: '🎬', label: 'Artykuły/Wideo', sub: count(MEDIA.length, 'materiał', 'materiały', 'materiałów') + ' do obejrzenia/przeczytania', count: MEDIA.length },
                 { key: 'verbs',         icon: '🔄', label: 'Czasowniki nieregularne', sub: VERB_ROUND_SIZE + ' na rundę z ' + VERB_BANK.length + ' w banku', count: VERB_BANK.length },
                 { key: 'pronunciation', icon: '🔊', label: 'Wymowa',    sub: count(PRONUNCIATION.length, 'słówko', 'słówka', 'słówek') + ' do posłuchania', count: PRONUNCIATION.length },
-                { key: 'writing',       icon: '🗣️', label: 'Pisanie/Mówienie', sub: count(WRITING.length, 'tekst', 'teksty', 'tekstów') + ' do przeczytania/napisania', count: WRITING.length },
+                { key: 'writing',       icon: '📖', label: 'Teksty', sub: count(WRITING.length, 'tekst', 'teksty', 'tekstów') + ' do przeczytania/napisania', count: WRITING.length },
                 { key: 'sentences',     icon: '✍️', label: 'Ułóż zdania', sub: count(SENT_COUNT, 'słówko', 'słówka', 'słówek') + ' z puli ' + SENT_POOL.length + ', losowo', count: SENT_POOL.length }
             ];
             // Kafelek czasownikow inaczej wyszedlby na stronie Unitu aktywny, bo
@@ -4982,7 +4987,7 @@ video {
         }
 
         // ==========================================
-        // Pisanie/Mowienie
+        // Teksty (dawniej Pisanie/Mowienie)
         // ==========================================
         // Lektor traktuje kropke po skrocie ("6 a.m.") jak zwykla kropke i czyta
         // dalej bez oddechu, co brzmi jak jedno zdanie bez sensu. Dzielimy tekst
@@ -4998,8 +5003,23 @@ video {
             return parts.map(function (s) { return s.trim(); }).filter(Boolean);
         }
 
-        var writingPlayback = null; // {sessionId, itemIdx, rate, sentences, idx, timer, paused, pendingNext}
+        // Offsety znakowe kazdego zdania w calym tekscie - do przeliczania
+        // pozycji paska postepu na numer zdania i z powrotem (przewijanie).
+        function computeCharOffsets(sentences) {
+            var offsets = [];
+            var total = 0;
+            sentences.forEach(function (s) {
+                offsets.push(total);
+                total += s.length;
+            });
+            return { offsets: offsets, total: total || 1 };
+        }
+
+        var writingPlayback = null; // {sessionId, itemIdx, rate, sentences, charOffsets, totalChars, idx, timer, paused, pendingNext}
         var writingSessionCounter = 0;
+        var writingSlowByItem = {}; // itemIdx -> bool, pamieta wybor tempa niezaleznie od tego, czy aktualnie gra
+
+        function writingRateFor(itemIdx) { return writingSlowByItem[itemIdx] ? 0.75 : 0.9; }
 
         function updateWritingButtons() {
             var box = el('hub-writing-list');
@@ -5012,12 +5032,34 @@ video {
                 b.innerHTML = isActivePlaying ? PAUSE_SVG : PLAY_SVG;
                 b.setAttribute('aria-label', isActivePlaying ? 'Pauza' : 'Odtwórz');
             });
+            Array.prototype.forEach.call(box.querySelectorAll('[data-hub-writing-rate]'), function (b) {
+                var idx = parseInt(b.getAttribute('data-hub-writing-rate'), 10);
+                b.classList.toggle('is-active', !!writingSlowByItem[idx]);
+            });
+        }
+
+        function resetWritingSeekBars() {
+            var box = el('hub-writing-list');
+            if (!box) return;
+            Array.prototype.forEach.call(box.querySelectorAll('[data-hub-writing-seek]'), function (bar) {
+                bar.value = 0;
+            });
+        }
+
+        function updateWritingSeekBar(itemIdx, fraction) {
+            var box = el('hub-writing-list');
+            if (!box) return;
+            var bar = box.querySelector('[data-hub-writing-seek="' + itemIdx + '"]');
+            if (!bar || bar.dataset.dragging === '1') return;
+            bar.value = Math.round(Math.max(0, Math.min(1, fraction || 0)) * 1000);
         }
 
         function stopWritingPlayback() {
             if (writingPlayback && writingPlayback.timer) clearTimeout(writingPlayback.timer);
+            try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
             writingPlayback = null;
             updateWritingButtons();
+            resetWritingSeekBars();
         }
 
         function playWritingSentence() {
@@ -5025,11 +5067,17 @@ video {
             if (!wp) return;
             var mySession = wp.sessionId;
             if (wp.idx >= wp.sentences.length) { stopWritingPlayback(); return; }
+            updateWritingSeekBar(wp.itemIdx, (wp.charOffsets[wp.idx] || 0) / wp.totalChars);
             try {
                 var u = new window.SpeechSynthesisUtterance(wp.sentences[wp.idx]);
                 u.lang = 'en-GB';
                 u.rate = wp.rate;
                 if (cachedVoice) u.voice = cachedVoice;
+                u.onboundary = function (ev) {
+                    if (!writingPlayback || writingPlayback.sessionId !== mySession) return;
+                    var base = writingPlayback.charOffsets[writingPlayback.idx] || 0;
+                    updateWritingSeekBar(writingPlayback.itemIdx, (base + (ev.charIndex || 0)) / writingPlayback.totalChars);
+                };
                 u.onend = function () {
                     if (!writingPlayback || writingPlayback.sessionId !== mySession) return;
                     writingPlayback.idx++;
@@ -5040,18 +5088,22 @@ video {
             } catch (e) { stopWritingPlayback(); }
         }
 
-        function startWritingPlayback(itemIdx, rate) {
+        function startWritingPlayback(itemIdx, startIdx) {
             var item = WRITING[itemIdx];
             if (!item) return;
             try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
             if (writingPlayback && writingPlayback.timer) clearTimeout(writingPlayback.timer);
+            var sentences = splitIntoSentences(item.text);
+            var meta = computeCharOffsets(sentences);
             writingSessionCounter++;
             writingPlayback = {
                 sessionId: writingSessionCounter,
                 itemIdx: itemIdx,
-                rate: rate,
-                sentences: splitIntoSentences(item.text),
-                idx: 0,
+                rate: writingRateFor(itemIdx),
+                sentences: sentences,
+                charOffsets: meta.offsets,
+                totalChars: meta.total,
+                idx: Math.max(0, Math.min(startIdx || 0, sentences.length - 1)),
                 timer: null,
                 paused: false,
                 pendingNext: false
@@ -5075,6 +5127,15 @@ video {
 
         function resumeWritingPlayback() {
             if (!writingPlayback || !writingPlayback.paused) return;
+            var itemIdx = writingPlayback.itemIdx;
+            var targetRate = writingRateFor(itemIdx);
+            if (writingPlayback.rate !== targetRate) {
+                // Tempo zmienilo sie w trakcie pauzy - nie da sie zmienic tempa
+                // wypowiedzi, ktora juz zaczela sie odtwarzac, wiec zaczynamy
+                // biezace zdanie od nowa, ale w nowym tempie.
+                startWritingPlayback(itemIdx, writingPlayback.idx);
+                return;
+            }
             writingPlayback.paused = false;
             if (writingPlayback.pendingNext) {
                 writingPlayback.pendingNext = false;
@@ -5090,8 +5151,30 @@ video {
                 if (writingPlayback.paused) resumeWritingPlayback();
                 else pauseWritingPlayback();
             } else {
-                startWritingPlayback(itemIdx, writingPlayback ? writingPlayback.rate : 0.9);
+                startWritingPlayback(itemIdx, 0);
             }
+        }
+
+        function toggleWritingSlowMode(itemIdx) {
+            writingSlowByItem[itemIdx] = !writingSlowByItem[itemIdx];
+            updateWritingButtons();
+            if (writingPlayback && writingPlayback.itemIdx === itemIdx && !writingPlayback.paused) {
+                // Tempo zmienia sie natychmiast - zaczynamy biezace zdanie od nowa w nowym tempie.
+                startWritingPlayback(itemIdx, writingPlayback.idx);
+            }
+        }
+
+        function seekWritingPlayback(itemIdx, fraction) {
+            var item = WRITING[itemIdx];
+            if (!item) return;
+            var sentences = splitIntoSentences(item.text);
+            var meta = computeCharOffsets(sentences);
+            var targetChar = fraction * meta.total;
+            var idx = 0;
+            for (var i = 0; i < meta.offsets.length; i++) {
+                if (meta.offsets[i] <= targetChar) idx = i; else break;
+            }
+            startWritingPlayback(itemIdx, idx);
         }
 
         function renderWriting() {
@@ -5108,16 +5191,18 @@ video {
                     escapeHtml(grp.label) + (grp.dateLabel ? ' &middot; ' + escapeHtml(grp.dateLabel) : '') + '</summary>';
                 var body = grp.items.map(function (w) {
                     var flatIdx = WRITING.indexOf(w);
-                    var speakers = speechSupported
-                        ? '<span class="hub-writing-speakers">' +
-                          '<button type="button" class="hub-speaker" data-hub-writing-playpause="' + flatIdx + '" aria-label="Odtw&oacute;rz">' + PLAY_SVG + '</button>' +
-                          '<button type="button" class="hub-speaker" data-hub-writing-speak="' + flatIdx + '" aria-label="Pos&#322;uchaj tekstu">' + SPEAKER_SVG + '</button>' +
-                          '<button type="button" class="hub-speaker hub-speaker-slow" data-hub-writing-speak-slow="' + flatIdx + '" aria-label="Pos&#322;uchaj wolniej">' + SPEAKER_SVG + '<span class="hub-speaker-slow-badge">0.75x</span></button>' +
-                          '</span>'
+                    var player = speechSupported
+                        ? '<div class="hub-player">' +
+                          '<button type="button" class="hub-player-btn" data-hub-writing-playpause="' + flatIdx + '" aria-label="Odtw&oacute;rz">' + PLAY_SVG + '</button>' +
+                          '<button type="button" class="hub-player-btn" data-hub-writing-stop="' + flatIdx + '" aria-label="Stop">' + STOP_SVG + '</button>' +
+                          '<button type="button" class="hub-player-btn hub-player-rate" data-hub-writing-rate="' + flatIdx + '" aria-label="Wolniej (0,75x)">0.75x</button>' +
+                          '<input type="range" class="hub-player-seek" data-hub-writing-seek="' + flatIdx + '" min="0" max="1000" value="0" aria-label="Przewijanie">' +
+                          '</div>'
                         : '';
-                    return '<div class="hub-pron">' + speakers +
+                    return '<div class="hub-pron">' +
                         '<div class="hub-pron-body">' +
                         (w.title ? '<p class="hub-pron-word">' + escapeHtml(w.title) + '</p>' : '') +
+                        player +
                         '<p class="hub-msg-body">' + escapeAndLinkify(w.text || '') + '</p>' +
                         '</div></div>';
                 }).join('');
@@ -5126,22 +5211,35 @@ video {
 
             box.addEventListener('click', function (e) {
                 var playPauseBtn = e.target.closest ? e.target.closest('[data-hub-writing-playpause]') : null;
-                var slowBtn = e.target.closest ? e.target.closest('[data-hub-writing-speak-slow]') : null;
-                var normalBtn = e.target.closest ? e.target.closest('[data-hub-writing-speak]') : null;
+                var stopBtn = e.target.closest ? e.target.closest('[data-hub-writing-stop]') : null;
+                var rateBtn = e.target.closest ? e.target.closest('[data-hub-writing-rate]') : null;
                 if (playPauseBtn) {
                     playPauseBtn.blur();
                     toggleWritingPlayPause(parseInt(playPauseBtn.getAttribute('data-hub-writing-playpause'), 10));
                     return;
                 }
-                if (slowBtn) {
-                    slowBtn.blur();
-                    startWritingPlayback(parseInt(slowBtn.getAttribute('data-hub-writing-speak-slow'), 10), 0.75);
+                if (stopBtn) {
+                    stopBtn.blur();
+                    stopWritingPlayback();
                     return;
                 }
-                if (normalBtn) {
-                    normalBtn.blur();
-                    startWritingPlayback(parseInt(normalBtn.getAttribute('data-hub-writing-speak'), 10), 0.9);
+                if (rateBtn) {
+                    rateBtn.blur();
+                    toggleWritingSlowMode(parseInt(rateBtn.getAttribute('data-hub-writing-rate'), 10));
                 }
+            });
+
+            box.addEventListener('input', function (e) {
+                var bar = e.target.closest ? e.target.closest('[data-hub-writing-seek]') : null;
+                if (!bar) return;
+                bar.dataset.dragging = '1';
+            });
+            box.addEventListener('change', function (e) {
+                var bar = e.target.closest ? e.target.closest('[data-hub-writing-seek]') : null;
+                if (!bar) return;
+                bar.dataset.dragging = '0';
+                var itemIdx = parseInt(bar.getAttribute('data-hub-writing-seek'), 10);
+                seekWritingPlayback(itemIdx, parseInt(bar.value, 10) / 1000);
             });
         }
 
