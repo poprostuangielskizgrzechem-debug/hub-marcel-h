@@ -4604,14 +4604,14 @@ video {
                 };
             } catch (e) { /* ignore */ }
         }
-        function speak(text, lang) {
+        function speak(text, lang, rate) {
             if (!speechSupported || !text) return;
             try {
                 window.speechSynthesis.cancel();
                 if (!voicesResolved) { cachedVoice = resolveVoice(); }
                 var u = new window.SpeechSynthesisUtterance(text);
                 u.lang = lang || 'en-GB';
-                u.rate = 0.9;
+                u.rate = rate || 0.9;
                 if (cachedVoice) u.voice = cachedVoice;
                 window.speechSynthesis.speak(u);
             } catch (e) { /* wymowa jest dodatkiem, nigdy nie blokuje nauki */ }
@@ -4986,7 +4986,11 @@ video {
                 var head = '<summary class="hub-section-title' + (gi === 0 ? ' is-first' : '') + '">' +
                     escapeHtml(grp.label) + (grp.dateLabel ? ' &middot; ' + escapeHtml(grp.dateLabel) : '') + '</summary>';
                 var body = grp.items.map(function (w) {
-                    return '<div class="hub-pron">' +
+                    var flatIdx = WRITING.indexOf(w);
+                    var speaker = speechSupported
+                        ? '<button type="button" class="hub-speaker" data-hub-writing-speak="' + flatIdx + '" aria-label="Pos&#322;uchaj tekstu">' + SPEAKER_SVG + '</button>'
+                        : '';
+                    return '<div class="hub-pron">' + speaker +
                         '<div class="hub-pron-body">' +
                         (w.title ? '<p class="hub-pron-word">' + escapeHtml(w.title) + '</p>' : '') +
                         '<p class="hub-msg-body">' + escapeAndLinkify(w.text || '') + '</p>' +
@@ -4994,6 +4998,14 @@ video {
                 }).join('');
                 return '<details class="hub-lesson-group"' + (isLast ? ' open' : '') + '>' + head + body + '</details>';
             }).join('');
+
+            box.addEventListener('click', function (e) {
+                var btn = e.target.closest ? e.target.closest('[data-hub-writing-speak]') : null;
+                if (!btn) return;
+                btn.blur();
+                var item = WRITING[parseInt(btn.getAttribute('data-hub-writing-speak'), 10)];
+                if (item) speak(item.text, 'en-GB', 0.75);
+            });
         }
 
         // ==========================================
