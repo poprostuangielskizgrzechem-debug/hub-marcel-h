@@ -4994,13 +4994,31 @@ video {
         // na zdania i odtwarzamy je jako osobne wypowiedzi z krotka przerwa
         // miedzy nimi - to samo, co naturalna pauza po kropce, tylko wymuszona
         // recznie zamiast liczyc na to, ze silnik mowy ja doda sam.
+        //
+        // Pierwsza wersja tej funkcji (match z [^.!?]+[.!?]+) gubila fragmenty
+        // tekstu na skrotach typu "a.m."/"p.m.": "6 a.m. My mum" zawiera DWIE
+        // kropki blisko siebie, regex probowal dopasowac granice zdania miedzy
+        // nimi, nie znajdowal spacji po pierwszej kropce i String.match po
+        // prostu POMIJAL caly nietrafiony fragment zamiast go zwrocic - efekt:
+        // "On Monday, I wake up at 6 a." znikalo bez sladu, a odtwarzanie
+        // zaczynalo sie od "m. My mum...". Teraz najpierw chronimy WEWNETRZNA
+        // kropke skrotu (miedzy "a"/"p" a "m"), zeby nie zostala wziednieta pod
+        // uwage jako koniec zdania, ale zostawiamy kropke PO "m" nietknieta -
+        // to ona daje szukana pauze. Dzielimy przez zamiane widocznej granicy
+        // zdania na marker i split() - bez regexowego "match", wiec zaden
+        // fragment tekstu nie moze zostac po cichu porzucony.
         function splitIntoSentences(text) {
-            var parts = String(text || '').match(/[^.!?]+[.!?]+(\s+|$)/g);
-            if (!parts || !parts.length) {
-                var whole = String(text || '').trim();
-                return whole ? [whole] : [];
-            }
-            return parts.map(function (s) { return s.trim(); }).filter(Boolean);
+            var str = String(text || '').trim();
+            if (!str) return [];
+            var ABBR_MARK = '';
+            var BREAK_MARK = '';
+            var guarded = str.replace(/\b([AaPp])\.(m\.)/g, function (_, letter, rest) {
+                return letter + ABBR_MARK + rest;
+            });
+            var withBreaks = guarded.replace(/([.!?]+)(\s+)/g, '$1' + BREAK_MARK);
+            return withBreaks.split(BREAK_MARK)
+                .map(function (s) { return s.split(ABBR_MARK).join('.').trim(); })
+                .filter(Boolean);
         }
 
         // Offsety znakowe kazdego zdania w calym tekscie - do przeliczania
