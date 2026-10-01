@@ -314,6 +314,7 @@
 /* FONTS_END */
     </style>
     
+    
     <style>
 /* TW_BUILD_START - generowane przez _tools/build_engine_css.mjs, nie edytuj recznie */
 *, ::before, ::after {
@@ -2562,7 +2563,8 @@ video {
             .hub-ex-instr { color: var(--hub-muted); font-size: 14px; line-height: 1.5; margin: 10px 0 12px; }
             .hub-ex-item { padding: 11px 0; border-top: 1px solid var(--hub-line); line-height: 1.9; font-size: 15.5px; }
             .hub-ex-item:first-of-type { border-top: none; }
-            .hub-ex-text { margin: 0 0 12px; line-height: 2.3; font-size: 15.5px; }
+            /* pre-line: "\n" w tekscie pozycji lamie linie (np. punkty polecenia w wypracowaniu) */
+            .hub-ex-text { margin: 0 0 12px; line-height: 2.3; font-size: 15.5px; white-space: pre-line; }
             .hub-ex-num { font-weight: 700; color: var(--hub-muted); margin-right: 6px; }
             .hub-ex-gapnum { font-weight: 700; margin: 0 3px 0 2px; }
             .hub-ex-hint { color: var(--hub-muted); font-size: 0.9em; }
@@ -3168,6 +3170,7 @@ video {
                         "dateLabel": "12.09.2026",
                         "categoryKey": "Lekcja 1 (12.09)",
                         "vocabCount": 8,
+                        "extraVocabCount": 0,
                         "topic": ""
                 },
                 {
@@ -3175,6 +3178,7 @@ video {
                         "dateLabel": "19.09.2026",
                         "categoryKey": "Lekcja 2 (19.09)",
                         "vocabCount": 11,
+                        "extraVocabCount": 0,
                         "topic": "Opis codziennej rutyny - co robimy w poniedziałek, krok po kroku"
                 },
                 {
@@ -3182,6 +3186,7 @@ video {
                         "dateLabel": "26.09.2026",
                         "categoryKey": "Lekcja 3 (26.09)",
                         "vocabCount": 29,
+                        "extraVocabCount": 0,
                         "topic": "Present Simple i Present Continuous: ćwiczenia z zeszytu ćwiczeń Together 7, Welcome Unit"
                 }
         ],
@@ -3639,7 +3644,8 @@ video {
                         "lessonLabel": "Lekcja 2",
                         "dateLabel": "19.09.2026",
                         "title": "Przeczytaj na głos: rutyna dnia",
-                        "text": "On Monday, I wake up at 6 a.m. My mum makes breakfast. We eat together. I put on my t-shirt, shorts and shoes. I brush my teeth and go to school. My lessons start at 8 o'clock. School finishes at quarter past three. I get back home at 4 p.m. and play my games console to relax. I occasionally do homework. We have dinner at 5 p.m. I take a shower at 7 p.m. and watch TV. At 10 o'clock it's time for bed."
+                        "text": "On Monday, I wake up at 6 a.m. My mum makes breakfast. We eat together. I put on my t-shirt, shorts and shoes. I brush my teeth and go to school. My lessons start at 8 o'clock. School finishes at quarter past three. I get back home at 4 p.m. and play my games console to relax. I occasionally do homework. We have dinner at 5 p.m. I take a shower at 7 p.m. and watch TV. At 10 o'clock it's time for bed.",
+                        "questions": []
                 }
         ],
         "exercises": [
@@ -4696,12 +4702,35 @@ video {
             const orderedSelectedTasks = taskTypes.filter(t => selectedTaskTypes.includes(t.id));
 
             // Intelligent Rotation Helper
-            function pullWordForTask(taskTypeId) {
+            // rejectFn (optional): words it returns true for are skipped while anything else is
+            // available - used by matching rounds to keep look-alike items out of the same round.
+            function pullWordForTask(taskTypeId, rejectFn) {
                 // gap_hint and abcd_gap both render sentenceWithGap - words missing it must be skipped for these tasks
                 const needsGap = (taskTypeId === 'gap_hint' || taskTypeId === 'abcd_gap');
 
                 if (activePoolToDrawFrom.length === 0) {
                     activePoolToDrawFrom = getRotationPool(authorizedPool, 1);
+                }
+
+                if (rejectFn) {
+                    let idx = activePoolToDrawFrom.findIndex(w => !rejectFn(w) && !(globalWordTaskHistory[w.word] || []).includes(taskTypeId));
+                    if (idx === -1) idx = activePoolToDrawFrom.findIndex(w => !rejectFn(w));
+                    let picked = null;
+                    if (idx !== -1) {
+                        picked = activePoolToDrawFrom.splice(idx, 1)[0];
+                    } else {
+                        // Rotation slice holds only look-alikes - reach into the full selected pool instead
+                        const safe = authorizedPool.filter(w => !rejectFn(w));
+                        if (safe.length > 0) picked = safe[Math.floor(Math.random() * safe.length)];
+                    }
+                    if (picked) {
+                        if (!globalWordTaskHistory[picked.word]) globalWordTaskHistory[picked.word] = [];
+                        globalWordTaskHistory[picked.word].push(taskTypeId);
+                        wordsSelectedThisSession.push(picked.word);
+                        return picked;
+                    }
+                    // Tiny vocabulary with nothing but look-alikes: fall through to the normal pick;
+                    // checkMatchingAnswers still accepts visually identical pairs.
                 }
                 if (needsGap && !activePoolToDrawFrom.some(w => !!w.sentenceWithGap)) {
                     // Current rotation slice has no gap-eligible words left - refill from the full authorized pool
@@ -4752,13 +4781,20 @@ video {
                 for (let i = 0; i < needed; i++) {
                     
                     if (taskDef.id.startsWith('match')) {
-                        let pairItems = [
-                            pullWordForTask(taskDef.id), pullWordForTask(taskDef.id), 
-                            pullWordForTask(taskDef.id), pullWordForTask(taskDef.id)
-                        ];
-                        
                         const rightField = taskDef.id === 'match_def' ? 'definition' : 'translation';
-                        
+
+                        // No two items in one round may look alike on screen: same word, same
+                        // translation/definition, or a marked near-synonym (excludeDistractors).
+                        // Otherwise a student can't tell two buttons apart and gets red for a
+                        // visually correct pair (e.g. "It's freezing." / "It's frosty." = "Jest mroźno.").
+                        const sameText = (a, b) => (a || '').trim().toLowerCase() === (b || '').trim().toLowerCase();
+                        let pairItems = [];
+                        for (let k = 0; k < 4; k++) {
+                            pairItems.push(pullWordForTask(taskDef.id, w => pairItems.some(p =>
+                                sameText(p.word, w.word) || sameText(p[rightField], w[rightField]) ||
+                                (p.excludeDistractors || []).includes(w.word) || (w.excludeDistractors || []).includes(p.word))));
+                        }
+
                         // FREEZE ITEM
                         let frozenQuestion = { assignedTaskType: taskDef.id, globalIndex: globalQCounter++, isCompleted: false, earnedXP: 0 };
                         // Pair identity uses a stable numeric id (pairItems' own index), not the
@@ -5204,6 +5240,23 @@ video {
             }
         }
 
+        // Safety net for rounds where look-alikes could not be kept apart (tiny vocabulary):
+        // a pair is correct when it is correct by id, or when the buttons the student joined
+        // show the same text as a correct pair. Returns the pair as the answer key spells it
+        // (so completedConnections still match correctMatchKey for server-side grading), or null.
+        function canonicalMatchConnection(task, leftId, rightId) {
+            const sameText = (a, b) => (a || '').trim().toLowerCase() === (b || '').trim().toLowerCase();
+            const leftOf = id => task.frozenLeft.find(l => String(l.id) === String(id));
+            const rightOf = id => task.frozenRight.find(r => String(r.id) === String(id));
+            const ownRight = rightOf(leftId), chosenRight = rightOf(rightId);
+            // ids come back as the numbers the answer key uses (button dataset ids are strings)
+            if (String(leftId) === String(rightId) && ownRight) return { leftId: ownRight.id, rightId: ownRight.id };
+            if (ownRight && chosenRight && sameText(ownRight.value, chosenRight.value)) return { leftId: ownRight.id, rightId: ownRight.id };
+            const chosenLeft = leftOf(leftId), ownLeft = leftOf(rightId);
+            if (chosenLeft && ownLeft && sameText(chosenLeft.word, ownLeft.word)) return { leftId: ownLeft.id, rightId: ownLeft.id };
+            return null;
+        }
+
         function checkMatchingAnswers(actionBtn, feedbackContainer, navContainer, task) {
             let mState = task.matchStateMemory;
             let allCorrectThisRound = true;
@@ -5213,13 +5266,14 @@ video {
 
                 const lBtn = findLeftBtn(conn.leftId);
                 const rBtn = findRightBtn(conn.rightId);
+                const canonical = canonicalMatchConnection(task, conn.leftId, conn.rightId);
 
-                if (String(conn.leftId) === String(conn.rightId)) {
+                if (canonical) {
                     conn.status = 'correct';
                     lBtn.className = "matching-btn relative w-full p-4 rounded-xl border-2 border-green-500 bg-green-50 text-green-900 font-display font-bold text-center z-30 opacity-90 cursor-not-allowed text-base";
                     rBtn.className = "matching-btn relative w-full min-h-[64px] p-4 rounded-xl border-2 border-green-500 bg-green-50 text-green-900 font-semibold flex items-center justify-center text-sm md:text-base z-30 opacity-90 cursor-not-allowed text-center";
                     lBtn.disabled = true; rBtn.disabled = true;
-                    task.completedConnections.push({ leftId: conn.leftId, rightId: conn.rightId });
+                    task.completedConnections.push(canonical);
                 } else {
                     conn.status = 'error'; allCorrectThisRound = false; 
                     lBtn.className = "matching-btn relative w-full p-4 rounded-xl border-2 border-red-500 bg-red-50 text-red-900 font-display font-bold text-center z-30 animate-shake text-base"; 
@@ -5998,7 +6052,8 @@ video {
                     '<span class="hub-lesson-head">' +
                         '<strong>' + escapeHtml(l.label || '') + '</strong>' +
                         '<span class="hub-lesson-meta">' + escapeHtml(l.dateLabel || '') +
-                        ' &middot; ' + escapeHtml(count(l.vocabCount || 0, 'słówko', 'słówka', 'słówek')) + '</span>' +
+                        ' &middot; ' + escapeHtml(count(l.vocabCount || 0, 'słówko', 'słówka', 'słówek')) +
+                        (l.extraVocabCount ? ' + ' + escapeHtml(String(l.extraVocabCount)) + ' extra' : '') + '</span>' +
                     '</span>' +
                     (l.topic ? '<span class="hub-lesson-topic">' + escapeHtml(l.topic) + '</span>' : '') +
                     '</div>';
@@ -6382,6 +6437,9 @@ video {
         function playWritingSentence() {
             var wp = writingPlayback;
             if (!wp) return;
+            // Timer przerwy miedzy zdaniami juz sie wykonal - bez wyzerowania
+            // pauza bralaby go za trwajaca cisze i nie przerywala lektora.
+            wp.timer = null;
             var mySession = wp.sessionId;
             if (wp.idx >= wp.sentences.length) { stopWritingPlayback(); return; }
             updateWritingSeekBar(wp.itemIdx, (wp.charOffsets[wp.idx] || 0) / wp.totalChars);
@@ -6437,7 +6495,13 @@ video {
                 writingPlayback.timer = null;
                 writingPlayback.pendingNext = true;
             } else {
-                try { window.speechSynthesis.pause(); } catch (e) { /* ignore */ }
+                // speechSynthesis.pause() bywa ignorowane w Chrome (glosy Google),
+                // wiec przerywamy i po wznowieniu czytamy biezace zdanie od poczatku.
+                // Nowy sessionId sprawia, ze onend przerwanej wypowiedzi nic nie robi.
+                writingSessionCounter++;
+                writingPlayback.sessionId = writingSessionCounter;
+                writingPlayback.pendingNext = true;
+                try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
             }
             updateWritingButtons();
         }
@@ -6903,6 +6967,22 @@ video {
             });
         }
 
+        // Pytania pod tekstem: klik w opcje od razu pokazuje dobrze/zle.
+        function writingQuestionsHtml(w, flatIdx) {
+            var qs = w.questions || [];
+            if (!qs.length) return '';
+            return '<div class="hub-wq">' + qs.map(function (q, qi) {
+                var opts = (q.options || []).map(function (opt, oi) {
+                    return '<button type="button" class="hub-ex-opt" data-wq="' + flatIdx + '" data-wq-q="' + qi + '" data-wq-opt="' + oi + '">' +
+                        escapeHtml(String.fromCharCode(65 + oi) + '. ' + opt) + '</button>';
+                }).join('');
+                return '<div class="hub-wq-item" style="margin:14px 0 0">' +
+                    '<p style="margin:0 0 6px;font-weight:700">' + (qi + 1) + '. ' + escapeHtml(q.q) + '</p>' +
+                    (opts ? '<div style="display:flex;flex-direction:column;align-items:flex-start;gap:4px">' + opts + '</div>' : '') +
+                    '</div>';
+            }).join('') + '</div>';
+        }
+
         function renderWriting() {
             var box = el('hub-writing-list');
             if (!box) return;
@@ -6930,12 +7010,28 @@ video {
                         (w.title ? '<p class="hub-pron-word">' + escapeHtml(w.title) + '</p>' : '') +
                         player +
                         '<p class="hub-msg-body">' + escapeAndLinkify(w.text || '') + '</p>' +
+                        writingQuestionsHtml(w, flatIdx) +
                         '</div></div>';
                 }).join('');
                 return '<details class="hub-lesson-group"' + (isLast ? ' open' : '') + '>' + head + body + '</details>';
             }).join('');
 
             box.addEventListener('click', function (e) {
+                var wqBtn = e.target.closest ? e.target.closest('[data-wq]') : null;
+                if (wqBtn) {
+                    var wItem = WRITING[parseInt(wqBtn.getAttribute('data-wq'), 10)];
+                    var wq = wItem && wItem.questions[parseInt(wqBtn.getAttribute('data-wq-q'), 10)];
+                    if (!wq) return;
+                    var picked = wq.options[parseInt(wqBtn.getAttribute('data-wq-opt'), 10)];
+                    var siblings = wqBtn.parentNode.querySelectorAll('[data-wq]');
+                    for (var si = 0; si < siblings.length; si++) siblings[si].classList.remove('is-ok', 'is-bad', 'is-key');
+                    if (picked === wq.answer) {
+                        wqBtn.classList.add('is-ok');
+                    } else {
+                        wqBtn.classList.add('is-bad');
+                    }
+                    return;
+                }
                 var playPauseBtn = e.target.closest ? e.target.closest('[data-hub-writing-playpause]') : null;
                 var stopBtn = e.target.closest ? e.target.closest('[data-hub-writing-stop]') : null;
                 var rateBtn = e.target.closest ? e.target.closest('[data-hub-writing-rate]') : null;
