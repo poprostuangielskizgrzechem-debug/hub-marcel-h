@@ -2612,6 +2612,9 @@ video {
             .hub-ex-table .hub-ex-input { width: 100%; min-width: 90px; text-align: left; }
             .hub-ex-img { width: 1%; }
             .hub-ex-img svg { display: block; height: 40px; width: auto; max-width: 64px; box-shadow: 0 0 0 1px #cbd5e1; }
+            /* rysunek nad calym cwiczeniem (ex.svg), np. drzewo genealogiczne */
+            .hub-ex-figure { margin: 4px 0 14px; text-align: center; }
+            .hub-ex-figure svg { display: inline-block; width: 100%; max-width: 560px; height: auto; }
             .hub-ex-self { padding: 12px 0; border-top: 1px solid var(--hub-line); }
             .hub-ex-self:first-of-type { border-top: none; }
             .hub-ex-self-q { margin: 0 0 6px; line-height: 1.5; }
@@ -2836,6 +2839,24 @@ video {
 
         // SLOWKA Z LEKCJI - jedna kategoria na lekcje
         const unitData = {
+            "Lekcja 2 (17.10)": [
+                        {
+                                    "word": "sleepover",
+                                    "translation": "nocowanie u kolegi / koleżanki",
+                                    "definition": "a night when children stay and sleep at a friend's house",
+                                    "pos": "n",
+                                    "sentenceWithGap": "On Friday I went to a [gap] at Tom's house and we watched films until midnight.",
+                                    "firstLetterHint": "s"
+                        },
+                        {
+                                    "word": "yawn",
+                                    "translation": "ziewać",
+                                    "definition": "to open your mouth wide and breathe in because you are tired or bored",
+                                    "pos": "v",
+                                    "sentenceWithGap": "I always [gap] and open my mouth wide when I'm sleepy.",
+                                    "firstLetterHint": "y"
+                        }
+            ],
             "Powtórka: Wrzesień 2026": [
                         {
                                     "word": "mad about",
@@ -3221,8 +3242,8 @@ video {
         "teacherWhatsApp": "48506152270",
         "storageKey": "hub_marcel-h_2026-10",
         "studentKey": "hub_marcel-h",
-        "stamp": "aktualizacja po lekcji 1, 3.10.2026",
-        "lastLessonPhrase": "lekcji 1",
+        "stamp": "aktualizacja po lekcji 2, 17.10.2026",
+        "lastLessonPhrase": "lekcji 2",
         "lessons": [
                 {
                         "label": "Lekcja 1",
@@ -3231,12 +3252,349 @@ video {
                         "vocabCount": 0,
                         "extraVocabCount": 0,
                         "topic": "Present Simple i Present Continuous: szablon do zadań."
+                },
+                {
+                        "label": "Lekcja 2",
+                        "dateLabel": "17.10.2026",
+                        "categoryKey": "Lekcja 2 (17.10)",
+                        "vocabCount": 2,
+                        "extraVocabCount": 0,
+                        "topic": "There is / there are, there was / there were oraz określenia ilości: some, any, no, much, many, a lot of, lots of, (a) few, (a) little"
                 }
         ],
-        "grammar": [],
+        "grammar": [
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "17.10.2026",
+                        "topic": "There is / there are, there was / there were",
+                        "mistake": "",
+                        "correction": "",
+                        "items": [],
+                        "explanation": "Tak mówimy, że coś gdzieś jest (albo było). Po polsku: „jest”, „są”, „był”, „była”, „były”. Formę wybierasz po pierwszym rzeczowniku po there: jedna rzecz albo coś niepoliczalnego → is / was, kilka rzeczy → are / were.",
+                        "sections": [
+                                {
+                                        "type": "table",
+                                        "tone": "blue",
+                                        "emoji": "",
+                                        "title": "",
+                                        "head": [
+                                                "Ile?",
+                                                "Teraz",
+                                                "W przeszłości"
+                                        ],
+                                        "rows": [
+                                                [
+                                                        "jedna rzecz / niepoliczalne",
+                                                        "**there is** (there's)",
+                                                        "**there was**"
+                                                ],
+                                                [
+                                                        "kilka rzeczy",
+                                                        "**there are**",
+                                                        "**there were**"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "type": "table",
+                                        "tone": "green",
+                                        "emoji": "",
+                                        "title": "",
+                                        "head": [
+                                                "Forma",
+                                                "Twierdzenie",
+                                                "Przeczenie",
+                                                "Pytanie"
+                                        ],
+                                        "rows": [
+                                                [
+                                                        "is",
+                                                        "There is a cat.",
+                                                        "There **isn't** a cat.",
+                                                        "**Is there** a cat?"
+                                                ],
+                                                [
+                                                        "are",
+                                                        "There are two cats.",
+                                                        "There **aren't** any cats.",
+                                                        "**Are there** any cats?"
+                                                ],
+                                                [
+                                                        "was",
+                                                        "There was a party.",
+                                                        "There **wasn't** a party.",
+                                                        "**Was there** a party?"
+                                                ],
+                                                [
+                                                        "were",
+                                                        "There were ten kids.",
+                                                        "There **weren't** any kids.",
+                                                        "**Were there** any kids?"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "type": "card",
+                                        "tone": "gold",
+                                        "emoji": "💬",
+                                        "title": "Krótkie odpowiedzi",
+                                        "points": [
+                                                "Powtarzasz there + is / are / was / were"
+                                        ],
+                                        "examples": [
+                                                "Is there a shop near here? **Yes, there is.** / **No, there isn't.**",
+                                                "Were there many people? **Yes, there were.** / **No, there weren't.**"
+                                        ]
+                                },
+                                {
+                                        "type": "card",
+                                        "tone": "blue",
+                                        "emoji": "🔍",
+                                        "title": "There is czy it is?",
+                                        "points": [
+                                                "**there is** mówi, że coś istnieje, że gdzieś jest",
+                                                "**it is** opisuje coś, o czym już mówimy"
+                                        ],
+                                        "examples": [
+                                                "**There is** a new shop in my street. **It is** very big. (Jest nowy sklep. Jest bardzo duży.)"
+                                        ]
+                                },
+                                {
+                                        "type": "card",
+                                        "tone": "red",
+                                        "emoji": "⚠️",
+                                        "title": "Najczęstsze błędy",
+                                        "points": [
+                                                "❌ In my room is a bed. → ✅ **There is** a bed in my room.",
+                                                "❌ There is two dogs. → ✅ There **are** two dogs.",
+                                                "❌ There was many people. → ✅ There **were** many people.",
+                                                "❌ There is a lot of books. → ✅ There **are** a lot of books.",
+                                                "❌ Is a park near here? → ✅ **Is there** a park near here?",
+                                                "❌ Yes, it is. (na pytanie Is there...?) → ✅ Yes, **there is**."
+                                        ],
+                                        "examples": []
+                                },
+                                {
+                                        "type": "tip",
+                                        "tone": "gold",
+                                        "emoji": "",
+                                        "title": "",
+                                        "text": "Patrz na rzeczownik zaraz po there:\nThere **is** a pen and two books.\nThere **are** two books and a pen."
+                                }
+                        ],
+                        "links": [
+                                {
+                                        "label": "There is (i trochę też it is) | ROCK YOUR ENGLISH #148",
+                                        "url": "https://www.youtube.com/watch?v=bADn-1Szvac&t=479s",
+                                        "type": "youtube",
+                                        "questions": [],
+                                        "quizzes": []
+                                },
+                                {
+                                        "label": "I Was, You Were (\"To Be\" Past Simple Song) - Rockin' English",
+                                        "url": "https://www.youtube.com/watch?v=KAsacxmPh1Q",
+                                        "type": "youtube",
+                                        "questions": [],
+                                        "quizzes": []
+                                }
+                        ]
+                },
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "17.10.2026",
+                        "topic": "Some / any / no",
+                        "mistake": "",
+                        "correction": "",
+                        "items": [],
+                        "explanation": "Tych słów używasz przed rzeczownikami w liczbie mnogiej (apples) i niepoliczalnymi (milk), kiedy nie mówisz dokładnie ile.",
+                        "sections": [
+                                {
+                                        "type": "table",
+                                        "tone": "blue",
+                                        "emoji": "",
+                                        "title": "",
+                                        "head": [
+                                                "Słowo",
+                                                "Gdzie?",
+                                                "Przykład"
+                                        ],
+                                        "rows": [
+                                                [
+                                                        "**some** (trochę, kilka)",
+                                                        "twierdzenia",
+                                                        "There are **some** apples in the fridge."
+                                                ],
+                                                [
+                                                        "**some**",
+                                                        "prośby i propozycje",
+                                                        "Can I have **some** water? Would you like **some** tea?"
+                                                ],
+                                                [
+                                                        "**any** (żadne, jakieś)",
+                                                        "przeczenia",
+                                                        "There aren't **any** apples."
+                                                ],
+                                                [
+                                                        "**any**",
+                                                        "pytania",
+                                                        "Are there **any** apples?"
+                                                ],
+                                                [
+                                                        "**no** (żadne)",
+                                                        "twierdzenie z sensem przeczenia",
+                                                        "There are **no** apples."
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "type": "card",
+                                        "tone": "green",
+                                        "emoji": "🟰",
+                                        "title": "not any = no",
+                                        "points": [
+                                                "To samo znaczenie, dwa sposoby"
+                                        ],
+                                        "examples": [
+                                                "There **isn't any** milk. = There **is no** milk."
+                                        ]
+                                },
+                                {
+                                        "type": "card",
+                                        "tone": "red",
+                                        "emoji": "⚠️",
+                                        "title": "Najczęstsze błędy",
+                                        "points": [
+                                                "❌ There aren't some apples. → ✅ There aren't **any** apples.",
+                                                "❌ There aren't no apples. → ✅ There aren't **any** apples. / There are **no** apples.",
+                                                "❌ I've got any sweets. → ✅ I've got **some** sweets.",
+                                                "❌ There is some apple. → ✅ There is **an** apple. / There are **some** apples."
+                                        ],
+                                        "examples": []
+                                },
+                                {
+                                        "type": "tip",
+                                        "tone": "gold",
+                                        "emoji": "",
+                                        "title": "",
+                                        "text": "Po **no** nie dajesz już not.\nnot + any ✅\nnot + no ❌"
+                                }
+                        ],
+                        "links": [
+                                {
+                                        "label": "Some/any/no | ROCK YOUR ENGLISH #94",
+                                        "url": "https://www.youtube.com/watch?v=r6mYBCEy_VA",
+                                        "type": "youtube",
+                                        "questions": [],
+                                        "quizzes": []
+                                }
+                        ]
+                },
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "17.10.2026",
+                        "topic": "How much / how many, a lot of / lots of, (a) few / (a) little",
+                        "mistake": "",
+                        "correction": "",
+                        "items": [],
+                        "explanation": "Najpierw sprawdź, czy rzeczownik jest policzalny (da się powiedzieć one, two, three: apples, friends) czy niepoliczalny (nie da się: water, money, time, homework). Od tego zależy całe słowo.",
+                        "sections": [
+                                {
+                                        "type": "table",
+                                        "tone": "blue",
+                                        "emoji": "",
+                                        "title": "",
+                                        "head": [
+                                                "Co?",
+                                                "Policzalne (friends, books)",
+                                                "Niepoliczalne (water, time)"
+                                        ],
+                                        "rows": [
+                                                [
+                                                        "Ile?",
+                                                        "**How many** friends?",
+                                                        "**How much** water?"
+                                                ],
+                                                [
+                                                        "dużo (pytania, przeczenia)",
+                                                        "**many**",
+                                                        "**much**"
+                                                ],
+                                                [
+                                                        "dużo (wszędzie, głównie twierdzenia)",
+                                                        "**a lot of / lots of**",
+                                                        "**a lot of / lots of**"
+                                                ],
+                                                [
+                                                        "kilka, trochę, wystarczy 🙂",
+                                                        "**a few**",
+                                                        "**a little**"
+                                                ],
+                                                [
+                                                        "mało, za mało 🙁",
+                                                        "**few**",
+                                                        "**little**"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "type": "card",
+                                        "tone": "green",
+                                        "emoji": "🍪",
+                                        "title": "Przykłady",
+                                        "points": [],
+                                        "examples": [
+                                                "**How many** brothers have you got? (Ilu masz braci?)",
+                                                "**How much** money have you got? (Ile masz pieniędzy?)",
+                                                "I haven't got **many** games. / I haven't got **much** time.",
+                                                "There were **a lot of** / **lots of** people at the party.",
+                                                "I've got **a few** sweets. Do you want one? (Mam kilka cukierków, chcesz?)",
+                                                "I've got **little** time. I must go. (Mam mało czasu, muszę iść.)"
+                                        ]
+                                },
+                                {
+                                        "type": "card",
+                                        "tone": "red",
+                                        "emoji": "⚠️",
+                                        "title": "Najczęstsze błędy",
+                                        "points": [
+                                                "❌ How much books? → ✅ **How many** books?",
+                                                "❌ How many money? → ✅ **How much** money?",
+                                                "❌ I have much friends. → ✅ I have **a lot of** friends.",
+                                                "❌ There are a lot people. → ✅ There are a lot **of** people.",
+                                                "❌ a few water → ✅ **a little** water",
+                                                "❌ two homeworks / informations → ✅ **some homework**, **some information** (niepoliczalne, bez -s)"
+                                        ],
+                                        "examples": []
+                                },
+                                {
+                                        "type": "tip",
+                                        "tone": "gold",
+                                        "emoji": "",
+                                        "title": "",
+                                        "text": "Patrz na „a”:\n**a** few / **a** little = jest OK 🙂\nfew / little bez „a” = za mało 🙁"
+                                }
+                        ],
+                        "links": [
+                                {
+                                        "label": "Much, many i inne określenia ilości. Policzalne i niepoliczalne rzeczowniki w angielskim | eTutor #5",
+                                        "url": "https://www.youtube.com/watch?v=v_R81sdG6Qw",
+                                        "type": "youtube",
+                                        "questions": [],
+                                        "quizzes": []
+                                }
+                        ]
+                }
+        ],
         "homework": [],
         "media": [],
-        "pronunciation": [],
+        "pronunciation": [
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "word": "yawn",
+                        "translation": "ziewać",
+                        "note": ""
+                }
+        ],
         "writingSpeaking": [],
         "exercises": [
                 {
@@ -3248,6 +3606,7 @@ video {
                         "columns": [],
                         "wordBox": [],
                         "letters": false,
+                        "strict": false,
                         "items": [
                                 {
                                         "text": "Ashlie always [gap] holiday at the seaside.",
@@ -3500,6 +3859,7 @@ video {
                         "columns": [],
                         "wordBox": [],
                         "letters": false,
+                        "strict": false,
                         "items": [
                                 {
                                         "text": "What time [gap] (you / usually / have) breakfast?",
@@ -3658,6 +4018,7 @@ video {
                         "columns": [],
                         "wordBox": [],
                         "letters": false,
+                        "strict": false,
                         "items": [
                                 {
                                         "text": "I'm not liking strawberries. → I [gap] strawberries.",
@@ -3784,6 +4145,7 @@ video {
                         "columns": [],
                         "wordBox": [],
                         "letters": false,
+                        "strict": false,
                         "items": [
                                 {
                                         "text": "Nigdy nie słucham radia.",
@@ -3864,6 +4226,919 @@ video {
                                 {
                                         "text": "Czy ona zawsze gra w koszykówkę w piątki?",
                                         "answer": "Does she always play basketball on Fridays?"
+                                }
+                        ]
+                },
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "17.10.2026",
+                        "title": "1. There is czy there are?",
+                        "instructions": "Kliknij poprawną formę.",
+                        "layout": "list",
+                        "columns": [],
+                        "wordBox": [],
+                        "letters": false,
+                        "strict": false,
+                        "items": [
+                                {
+                                        "text": "[gap] a big park near my school.",
+                                        "answers": [
+                                                "There is"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "There is",
+                                                        "There are"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] three bedrooms in our flat.",
+                                        "answers": [
+                                                "There are"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "There is",
+                                                        "There are"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] some milk in the fridge.",
+                                        "answers": [
+                                                "There is"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "There is",
+                                                        "There are"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] a lot of children in the playground.",
+                                        "answers": [
+                                                "There are"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "There is",
+                                                        "There are"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] a pen and two books on my desk.",
+                                        "answers": [
+                                                "There is"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "There is",
+                                                        "There are"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] two books and a pen on my desk.",
+                                        "answers": [
+                                                "There are"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "There is",
+                                                        "There are"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] a new boy in our class.",
+                                        "answers": [
+                                                "There is"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "There is",
+                                                        "There are"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] twenty-five students in my class.",
+                                        "answers": [
+                                                "There are"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "There is",
+                                                        "There are"
+                                                ]
+                                        ]
+                                }
+                        ]
+                },
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "17.10.2026",
+                        "title": "2. There was czy there were?",
+                        "instructions": "Kliknij poprawną formę. Wszystkie zdania są o przeszłości.",
+                        "layout": "list",
+                        "columns": [],
+                        "wordBox": [],
+                        "letters": false,
+                        "strict": false,
+                        "items": [
+                                {
+                                        "text": "[gap] a great sleepover at Tom's house last Friday.",
+                                        "answers": [
+                                                "There was"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "There was",
+                                                        "There were"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] six boys at the sleepover.",
+                                        "answers": [
+                                                "There were"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "There was",
+                                                        "There were"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] a lot of pizza on the table.",
+                                        "answers": [
+                                                "There was"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "There was",
+                                                        "There were"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] many people at the concert yesterday.",
+                                        "answers": [
+                                                "There were"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "There was",
+                                                        "There were"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] a funny film on TV last night.",
+                                        "answers": [
+                                                "There was"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "There was",
+                                                        "There were"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] two tests at school last week.",
+                                        "answers": [
+                                                "There were"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "There was",
+                                                        "There were"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] some juice in the bottle, but now it's empty.",
+                                        "answers": [
+                                                "There was"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "There was",
+                                                        "There were"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "In 2010 [gap] no smartphones in my grandma's house.",
+                                        "answers": [
+                                                "there were"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "there was",
+                                                        "there were"
+                                                ]
+                                        ]
+                                }
+                        ]
+                },
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "17.10.2026",
+                        "title": "3. Przeczenia",
+                        "instructions": "Zamień zdanie na przeczenie. Wpisz krótką formę: isn't, aren't, wasn't albo weren't.",
+                        "layout": "list",
+                        "columns": [],
+                        "wordBox": [],
+                        "letters": false,
+                        "strict": false,
+                        "items": [
+                                {
+                                        "text": "There is a TV in my bedroom. → There [gap] a TV in my bedroom.",
+                                        "answers": [
+                                                [
+                                                        "isn't",
+                                                        "is not"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "There are some cats in the garden. → There [gap] any cats in the garden.",
+                                        "answers": [
+                                                [
+                                                        "aren't",
+                                                        "are not"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "There was a party on Saturday. → There [gap] a party on Saturday.",
+                                        "answers": [
+                                                [
+                                                        "wasn't",
+                                                        "was not"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "There were some kids in the park. → There [gap] any kids in the park.",
+                                        "answers": [
+                                                [
+                                                        "weren't",
+                                                        "were not"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "There is some bread. → There [gap] any bread.",
+                                        "answers": [
+                                                [
+                                                        "isn't",
+                                                        "is not"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "There were a lot of mistakes in my test. → There [gap] many mistakes in my test.",
+                                        "answers": [
+                                                [
+                                                        "weren't",
+                                                        "were not"
+                                                ]
+                                        ]
+                                }
+                        ]
+                },
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "17.10.2026",
+                        "title": "4. Pytania i krótkie odpowiedzi",
+                        "instructions": "Uzupełnij pytanie (np. Is there, Were there) i krótką odpowiedź (np. Yes, there is).",
+                        "layout": "list",
+                        "columns": [],
+                        "wordBox": [],
+                        "letters": false,
+                        "strict": false,
+                        "items": [
+                                {
+                                        "text": "[gap] a cinema in your town? Yes, [gap].",
+                                        "answers": [
+                                                "Is there",
+                                                "there is"
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] any eggs in the fridge? No, [gap].",
+                                        "answers": [
+                                                "Are there",
+                                                [
+                                                        "there aren't",
+                                                        "there are not"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] a test yesterday? Yes, [gap].",
+                                        "answers": [
+                                                "Was there",
+                                                "there was"
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] many people at the sleepover? No, [gap].",
+                                        "answers": [
+                                                "Were there",
+                                                [
+                                                        "there weren't",
+                                                        "there were not"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] any juice in the bottle? No, [gap].",
+                                        "answers": [
+                                                "Is there",
+                                                [
+                                                        "there isn't",
+                                                        "there is not"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] any good films on TV last night? Yes, [gap].",
+                                        "answers": [
+                                                "Were there",
+                                                "there were"
+                                        ]
+                                }
+                        ]
+                },
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "17.10.2026",
+                        "title": "5. Some, any czy no?",
+                        "instructions": "Kliknij poprawne słowo.",
+                        "layout": "list",
+                        "columns": [],
+                        "wordBox": [],
+                        "letters": false,
+                        "strict": false,
+                        "items": [
+                                {
+                                        "text": "There are [gap] apples on the table. Take one!",
+                                        "answers": [
+                                                "some"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "some",
+                                                        "any",
+                                                        "no"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "There aren't [gap] sweets in the box.",
+                                        "answers": [
+                                                "any"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "some",
+                                                        "any",
+                                                        "no"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "Are there [gap] shops near your house?",
+                                        "answers": [
+                                                "any"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "some",
+                                                        "any",
+                                                        "no"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "There is [gap] milk. The fridge is empty!",
+                                        "answers": [
+                                                "no"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "some",
+                                                        "any",
+                                                        "no"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "Can I have [gap] water, please?",
+                                        "answers": [
+                                                "some"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "some",
+                                                        "any",
+                                                        "no"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "I haven't got [gap] homework today.",
+                                        "answers": [
+                                                "any"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "some",
+                                                        "any",
+                                                        "no"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "There were [gap] people in the street. It was 3 a.m.",
+                                        "answers": [
+                                                "no"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "some",
+                                                        "any",
+                                                        "no"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "Would you like [gap] cake?",
+                                        "answers": [
+                                                "some"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "some",
+                                                        "any",
+                                                        "no"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "Was there [gap] food at the party?",
+                                        "answers": [
+                                                "any"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "some",
+                                                        "any",
+                                                        "no"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "We've got [gap] bread, so let's make sandwiches.",
+                                        "answers": [
+                                                "some"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "some",
+                                                        "any",
+                                                        "no"
+                                                ]
+                                        ]
+                                }
+                        ]
+                },
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "17.10.2026",
+                        "title": "6. How much czy how many?",
+                        "instructions": "Kliknij poprawną formę. Najpierw sprawdź, czy rzeczownik da się policzyć.",
+                        "layout": "list",
+                        "columns": [],
+                        "wordBox": [],
+                        "letters": false,
+                        "strict": false,
+                        "items": [
+                                {
+                                        "text": "[gap] brothers and sisters have you got?",
+                                        "answers": [
+                                                "How many"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "How much",
+                                                        "How many"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] money have you got?",
+                                        "answers": [
+                                                "How much"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "How much",
+                                                        "How many"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] water do you drink every day?",
+                                        "answers": [
+                                                "How much"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "How much",
+                                                        "How many"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] students are there in your class?",
+                                        "answers": [
+                                                "How many"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "How much",
+                                                        "How many"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] homework did you have yesterday?",
+                                        "answers": [
+                                                "How much"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "How much",
+                                                        "How many"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] friends were there at the sleepover?",
+                                        "answers": [
+                                                "How many"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "How much",
+                                                        "How many"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] time do you need?",
+                                        "answers": [
+                                                "How much"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "How much",
+                                                        "How many"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] games have you got on your phone?",
+                                        "answers": [
+                                                "How many"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "How much",
+                                                        "How many"
+                                                ]
+                                        ]
+                                }
+                        ]
+                },
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "17.10.2026",
+                        "title": "7. Much, many, a lot of, lots of",
+                        "instructions": "Kliknij poprawne słowo.",
+                        "layout": "list",
+                        "columns": [],
+                        "wordBox": [],
+                        "letters": false,
+                        "strict": false,
+                        "items": [
+                                {
+                                        "text": "I haven't got [gap] friends in my new school.",
+                                        "answers": [
+                                                "many"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "much",
+                                                        "many"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "There isn't [gap] juice in the bottle.",
+                                        "answers": [
+                                                "much"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "much",
+                                                        "many"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "There were [gap] people at the party.",
+                                        "answers": [
+                                                "a lot of"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "a lot of",
+                                                        "much"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "She has got [gap] books in her room.",
+                                        "answers": [
+                                                "lots of"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "lots of",
+                                                        "much"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "We didn't have [gap] time at the shop.",
+                                        "answers": [
+                                                "much"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "much",
+                                                        "many"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "Did you get [gap] presents for your birthday?",
+                                        "answers": [
+                                                "many"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "much",
+                                                        "many"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "My dad drinks [gap] coffee every morning.",
+                                        "answers": [
+                                                "a lot of"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "a lot of",
+                                                        "many"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "There aren't [gap] cars in my street.",
+                                        "answers": [
+                                                "many"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "much",
+                                                        "many"
+                                                ]
+                                        ]
+                                }
+                        ]
+                },
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "17.10.2026",
+                        "title": "8. Few, a few, little, a little",
+                        "instructions": "Kliknij poprawne słowo. Pamiętaj: z „a” jest OK 🙂, bez „a” jest za mało 🙁.",
+                        "layout": "list",
+                        "columns": [],
+                        "wordBox": [],
+                        "letters": false,
+                        "strict": false,
+                        "items": [
+                                {
+                                        "text": "I've got [gap] sweets. Do you want one?",
+                                        "answers": [
+                                                "a few"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "a few",
+                                                        "a little"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "Can I have [gap] sugar in my tea, please?",
+                                        "answers": [
+                                                "a little"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "a few",
+                                                        "a little"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "There were very [gap] people at the match. It was boring and the stadium was almost empty.",
+                                        "answers": [
+                                                "few"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "few",
+                                                        "little"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "I have very [gap] time today. I can't play with you.",
+                                        "answers": [
+                                                "little"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "few",
+                                                        "little"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "We stayed at the sleepover for [gap] hours and then went home.",
+                                        "answers": [
+                                                "a few"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "a few",
+                                                        "a little"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "There's [gap] milk left. Let's make pancakes!",
+                                        "answers": [
+                                                "a little"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "little",
+                                                        "a little"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "He's sad because he has [gap] friends. Nobody plays with him.",
+                                        "answers": [
+                                                "few"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "few",
+                                                        "a few"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "There's [gap] water in the bottle. I'm really thirsty and it's not enough.",
+                                        "answers": [
+                                                "little"
+                                        ],
+                                        "choices": [
+                                                [
+                                                        "little",
+                                                        "a little"
+                                                ]
+                                        ]
+                                }
+                        ]
+                },
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "17.10.2026",
+                        "title": "9. Podsumowanie: wszystko razem",
+                        "instructions": "Wpisz brakujące słowo albo słowa. W nawiasie masz podpowiedź, o co chodzi.",
+                        "layout": "list",
+                        "columns": [],
+                        "wordBox": [],
+                        "letters": false,
+                        "strict": false,
+                        "items": [
+                                {
+                                        "text": "[gap] (było) a lot of snow last winter.",
+                                        "answers": [
+                                                "There was"
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] (ile) eggs do we need for the cake?",
+                                        "answers": [
+                                                "How many"
+                                        ]
+                                },
+                                {
+                                        "text": "There aren't [gap] (żadne) tomatoes in the fridge.",
+                                        "answers": [
+                                                "any"
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] (czy są) any good games on your computer?",
+                                        "answers": [
+                                                "Are there"
+                                        ]
+                                },
+                                {
+                                        "text": "There were [gap] (dużo, 3 słowa) kids at the sleepover.",
+                                        "answers": [
+                                                [
+                                                        "a lot of",
+                                                        "lots of"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "I'm so tired. There [gap] (nie było) any time to sleep yesterday.",
+                                        "answers": [
+                                                [
+                                                        "wasn't",
+                                                        "was not"
+                                                ]
+                                        ]
+                                },
+                                {
+                                        "text": "[gap] (ile) sugar do you want in your tea?",
+                                        "answers": [
+                                                "How much"
+                                        ]
+                                },
+                                {
+                                        "text": "There is [gap] (żadnego, 1 słowo) bread. Let's go to the shop.",
+                                        "answers": [
+                                                "no"
+                                        ]
+                                },
+                                {
+                                        "text": "I've got [gap] (kilka, 2 słowa) friends in this town, so I'm not alone.",
+                                        "answers": [
+                                                "a few"
+                                        ]
+                                },
+                                {
+                                        "text": "Can I have [gap] (trochę, 2 słowa) water? Just half a glass.",
+                                        "answers": [
+                                                "a little"
+                                        ]
+                                },
+                                {
+                                        "text": "There [gap] (były) two dogs and a cat in the garden.",
+                                        "answers": [
+                                                "were"
+                                        ]
+                                },
+                                {
+                                        "text": "There is a new café in town. [gap] (jest) very nice.",
+                                        "answers": [
+                                                [
+                                                        "It is",
+                                                        "It's"
+                                                ]
+                                        ]
                                 }
                         ]
                 }
@@ -4008,17 +5283,45 @@ video {
                         "word": "last summer",
                         "translation": "zeszłego lata",
                         "pos": "phr"
+                },
+                {
+                        "word": "pillow",
+                        "translation": "poduszka",
+                        "pos": "n"
+                },
+                {
+                        "word": "blanket",
+                        "translation": "koc",
+                        "pos": "n"
                 }
         ],
         "priorityVerbs": [],
         "verbRoundSize": 6,
-        "sentencePool": [],
-        "sentenceCount": 1,
+        "sentencePool": [
+                {
+                        "word": "sleepover",
+                        "lessons": [
+                                "Lekcja 2"
+                        ]
+                },
+                {
+                        "word": "yawn",
+                        "lessons": [
+                                "Lekcja 2"
+                        ]
+                }
+        ],
+        "sentenceCount": 2,
         "messages": [
                 {
                         "lessonLabel": "Lekcja 1",
                         "dateLabel": "3.10.2026",
                         "text": "Zrób zadania z zakładki „Ćwiczenia”. Wyślij mi wyniki. Nadal ćwicz słówka, korzystając z testów."
+                },
+                {
+                        "lessonLabel": "Lekcja 2",
+                        "dateLabel": "17.10.2026",
+                        "text": "W zakładce „Gramatyka” masz sporo filmików. Obejrzyj je sobie. Jest tam też opis, takie podsumowanie tego, co przerabialiśmy. Przeczytaj go, spójrz na przykłady i najczęstsze błędy i spróbuj to sobie poukładać w głowie. W zakładce „Ćwiczenia” masz zadania z gramatyki, która będzie Ci potrzebna."
                 }
         ]
 };
@@ -5972,13 +7275,26 @@ video {
                 box.innerHTML = '<p class="hub-empty">Na razie bez artyku&#322;&oacute;w ani film&oacute;w. Poka&#380;&#261; si&#281; tu po kolejnej lekcji.</p>';
                 return;
             }
+            // Quizy pod artykulem (m.quizzes, 2026-10-14): ABCD albo Prawda/Falsz,
+            // ten sam mechanizm co pytania w Tekstach (wqHandleClick/wqApply).
+            var quizNo = 0;
             box.innerHTML = groups.map(function (grp, gi) {
                 var head = '<p class="hub-section-title' + (gi === 0 ? ' is-first' : '') + '">' +
                     escapeHtml(grp.label) + (grp.dateLabel ? ' &middot; ' + escapeHtml(grp.dateLabel) : '') + '</p>';
-                return head + renderLinks(grp.items.map(function (m) {
-                    return { label: m.label, url: m.url, type: m.type, questions: m.questions };
-                }));
-            }).join('');
+                return head + grp.items.map(function (m) {
+                    var tile = renderLinks([{ label: m.label, url: m.url, type: m.type, questions: m.questions }]);
+                    return tile + (m.quizzes || []).map(function (qz) {
+                        var key = 'm' + (quizNo++);
+                        var w = { wqKey: 'media|' + m.url + '|' + qz.title, title: qz.title, type: qz.type,
+                            article: m.label, section: 'Artykuły/Wideo', questions: qz.questions };
+                        return '<details class="hub-ex-card hub-media-quiz"' + (key === 'm0' ? ' open' : '') + '>' +
+                            '<summary class="hub-ex-head"><span class="hub-ex-title">' + escapeHtml(qz.title) + '</span></summary>' +
+                            writingQuestionsHtml(w, key, true) + '</details>';
+                    }).join('');
+                }).join('');
+            }).join('') + (quizNo ? wqSharePanelHtml('mall') : '');
+            Object.keys(WQ_REG).forEach(function (k) { if (k.charAt(0) === 'm') wqApply(WQ_REG[k], k); });
+            box.addEventListener('click', function (e) { wqHandleClick(e); });
         }
 
         // ==========================================
@@ -6257,10 +7573,65 @@ video {
         }
         function exAccepted(a) { return Array.isArray(a) ? a : [a]; }
         // layout "transform": cale zdanie, wiec kropka/wykrzyknik na koncu nie decyduje.
-        function exMatch(ex, a, v) {
+        // Tolerancja wpisywanych odpowiedzi (decyzja Grzecha 2026-10-17, wszyscy uczniowie):
+        // brak/nadmiar interpunkcji i apostrofow, wersja AmE/BrE oraz drobna literowka
+        // (1 znak w jednym slowie od 5 liter) licza sie jako poprawne. Literowka NIE
+        // obejmuje koncowek -s/-es/-d/-ed/-n, bo to blad gramatyczny. Synonimy dopisuje
+        // sie do answers w hub_input.json. Luki do klikniecia i cwiczenia z
+        // "strict": true (np. "popraw pisownie") porownuja sie dokladnie, jak dawniej.
+        var EX_US_UK = { gray: 'grey', program: 'programme', check: 'cheque', tire: 'tyre', pajamas: 'pyjamas',
+            mom: 'mum', math: 'maths', aluminum: 'aluminium', jewelry: 'jewellery', plow: 'plough', donut: 'doughnut',
+            catalog: 'catalogue', dialog: 'dialogue', analog: 'analogue', skeptical: 'sceptical', mustache: 'moustache',
+            gotten: 'got', fall: 'autumn', apartment: 'flat', vacation: 'holiday', cookie: 'biscuit', cookies: 'biscuits' };
+        function exLoose(x) {
+            return exNorm(x).replace(/can't/g, 'cannot').replace(/won't/g, 'will not').replace(/n't/g, ' not')
+                .replace(/'re /g, ' are ').replace(/'ve /g, ' have ').replace(/'m /g, ' am ').replace(/'ll /g, ' will ').replace(/'/g, '').replace(/[.,!?;:"()“”„–—-]+/g, ' ')
+                .replace(/\s+/g, ' ').trim().split(' ').map(function (w) {
+                    if (EX_US_UK[w]) return EX_US_UK[w];
+                    return w.replace(/^([a-z]*(col|fav|flav|hon|hum|lab|neighb|beh|harb|rum|vap|arm|rig|vig))or(s|ed|ing|ite|ites|ful|able|ly|hood)?$/, '$1our$3')
+                        .replace(/([a-z]{2})(i|y)z(e|es|ed|ing|ation|ations)$/, '$1$2s$3')
+                        .replace(/^(cent|theat|met|lit|fib|kilomet|centimet|millimet)er(s)?$/, '$1re$2')
+                        .replace(/([aeiou])l(ed|ing|er|ers)$/, '$1ll$2');
+                }).join(' ');
+        }
+        function exLev(a, b) {
+            if (Math.abs(a.length - b.length) > 1) return 2;
+            // Damerau: zamiana dwoch sasiednich liter (littel) to tez jedna literowka.
+            var pp = [], prev = [], cur, i, j;
+            for (j = 0; j <= b.length; j++) prev[j] = j;
+            for (i = 1; i <= a.length; i++) {
+                cur = [i];
+                for (j = 1; j <= b.length; j++) {
+                    cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+                    if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) cur[j] = Math.min(cur[j], pp[j - 2] + 1);
+                }
+                pp = prev; prev = cur;
+            }
+            return prev[b.length];
+        }
+        function exTypoOk(x, v) {
+            var xw = x.split(' '), vw = v.split(' '), diffs = 0;
+            if (xw.length !== vw.length) return false;
+            for (var i = 0; i < xw.length; i++) {
+                if (xw[i] === vw[i]) continue;
+                var p = xw[i], q = vw[i];
+                if (p.length < 5 || q.length < 5) return false;
+                var lo = p.length <= q.length ? p : q, hi = p.length <= q.length ? q : p;
+                if (hi.indexOf(lo) === 0 && /^(s|es|d|ed|n)$/.test(hi.slice(lo.length))) return false;
+                if (exLev(p, q) > 1) return false;
+                diffs++;
+            }
+            return diffs <= 1;
+        }
+        function exMatch(ex, a, v, choice) {
             var f = ex && ex.layout === 'transform'
                 ? function (x) { return exNorm(x).replace(/\s*[.!?]+$/, ''); } : exNorm;
-            return !!String(v || '').trim() && exAccepted(a).some(function (x) { return f(x) === f(v); });
+            if (!String(v || '').trim()) return false;
+            var acc = exAccepted(a);
+            if (acc.some(function (x) { return f(x) === f(v); })) return true;
+            if (choice || (ex && ex.strict)) return false;
+            var lv = exLoose(v);
+            return !!lv && acc.some(function (x) { var lx = exLoose(x); return lx === lv || exTypoOk(lx, lv); });
         }
         function exLoad() {
             try { var o = JSON.parse(safeGet(EX_KEY) || '{}'); return (o && typeof o === 'object') ? o : {}; }
@@ -6280,6 +7651,16 @@ video {
         function exIsChoice(ex, itIdx, gap) {
             var ch = ex.items[itIdx].choices;
             return !!(ch && ch[gap] && ch[gap].length);
+        }
+        // Same luki do klikniecia (2026-10-13): kazda blokuje sie i ocenia od razu
+        // po kliknieciu, wiec przycisk "Sprawdz" nic by nie dodal i go nie ma.
+        function exAllChoice(ex) {
+            if (['sort', 'drag', 'transform', 'wordform', 'selfcheck'].indexOf(ex.layout) !== -1) return false;
+            var n = 0;
+            var all = ex.items.every(function (it, itIdx) {
+                return (it.answers || []).every(function (a, gi) { n++; return exIsChoice(ex, itIdx, gi); });
+            });
+            return all && n > 0;
         }
         function exLetter(ex, i) { return ex.letters ? String.fromCharCode(65 + i) + ' ' : ''; }
         // layout "table": text pozycji to komorki rozdzielone "|"; przy svg
@@ -6304,7 +7685,7 @@ video {
                     total++;
                     var val = st.v[itIdx + '-' + gap] || '';
                     if (String(val).trim()) filled++;
-                    var good = exMatch(ex, a, val) && (ex.layout !== 'transform' || st.ic[itIdx]);
+                    var good = exMatch(ex, a, val, exIsChoice(ex, itIdx, gap)) && (ex.layout !== 'transform' || st.ic[itIdx]);
                     if (good) ok++;
                     else wrong.push({
                         num: ex.layout === 'sort' ? it.text
@@ -6522,10 +7903,11 @@ video {
                     (isSelf ? '' : '<span class="hub-ex-score" data-ex-score="' + exIdx + '" data-ex-total="' + gapTotal + '">&ndash; / ' + gapTotal + '</span>') +
                     '</summary>' +
                     (ex.instructions ? '<p class="hub-ex-instr">' + escapeHtml(ex.instructions) + '</p>' : '') +
+                    (ex.figure ? '<div class="hub-ex-figure">' + ex.figure + '</div>' : '') +
                     wordBox + body +
                     (isSelf || ex.layout === 'transform' ? '' :
                     '<div class="hub-ex-actions">' +
-                    '<button type="button" class="hub-ex-btn hub-ex-btn-main" data-ex-check="' + exIdx + '">Sprawd&#378;</button>' +
+                    (exAllChoice(ex) ? '' : '<button type="button" class="hub-ex-btn hub-ex-btn-main" data-ex-check="' + exIdx + '">Sprawd&#378;</button>') +
                     '<button type="button" class="hub-ex-btn" data-ex-reset="' + exIdx + '">&#8635; Resetuj</button>' +
                     (ex.layout === 'wordform' ? '<button type="button" class="hub-ex-btn" data-ex-reroll="' + exIdx + '">&#127922; Losuj ponownie</button>' : '') +
                     '</div>') + '</details>';
@@ -6545,7 +7927,8 @@ video {
                 return EXERCISES[+g.getAttribute('data-ex')].items[+g.getAttribute('data-it')].answers[+g.getAttribute('data-gap')];
             }
             function okValue(g, v) {
-                return exMatch(EXERCISES[+g.getAttribute('data-ex')], answerOf(g), v);
+                var ex = EXERCISES[+g.getAttribute('data-ex')];
+                return exMatch(ex, answerOf(g), v, exIsChoice(ex, +g.getAttribute('data-it'), +g.getAttribute('data-gap')));
             }
             function isLocked(g, st) {
                 if (st.checked) return true;
@@ -7099,7 +8482,13 @@ video {
         var wqState = wqLoad();
         // Klucz po tytule i poczatku tekstu, nie po pozycji - nowy tekst dopisany
         // pozniej w miesiacu nie przesunie zapisanych odpowiedzi.
-        function wqId(w) { return (w.title || '') + '|' + String(w.text || '').slice(0, 40); }
+        function wqId(w) { return w.wqKey || ((w.title || '') + '|' + String(w.text || '').slice(0, 40)); }
+        // Rejestr punktowanych zestawow pytan po kluczu DOM: "w<i>" = tekst z zakladki
+        // Teksty, "m<i>" = quiz pod artykulem w Artykuly/Wideo (2026-10-14). Ten sam
+        // mechanizm blokady, prob, resetu i wysylki dla obu zakladek.
+        var WQ_REG = {};
+        // Etykieta odpowiedzi w wiadomosci: litera przy ABCD, slowo przy Prawda/Falsz.
+        function wqOptLabel(w, q, oi) { return w.type === 'tf' ? q.options[oi] : String.fromCharCode(65 + oi); }
         function wqSt(w) {
             var k = wqId(w);
             if (!wqState[k] || typeof wqState[k] !== 'object') wqState[k] = { picks: {}, attempts: 1 };
@@ -7124,16 +8513,16 @@ video {
                 if (p === undefined) return;
                 answered++;
                 if (q.options[p] === q.answer) ok++;
-                else wrong.push({ num: qi + 1, picked: String.fromCharCode(65 + p), key: String.fromCharCode(65 + q.options.indexOf(q.answer)) });
+                else wrong.push({ num: qi + 1, picked: wqOptLabel(w, q, p), key: wqOptLabel(w, q, q.options.indexOf(q.answer)) });
             });
             return { ok: ok, answered: answered, total: wqGraded(w).length, wrong: wrong, attempts: st.attempts };
         }
         function wqShareText(w) {
             var r = wqResult(w);
             var lines = [
-                (HUB.student || 'Uczeń') + ' - ' + (HUB.monthLabel || '') + ', Teksty',
+                (HUB.student || 'Uczeń') + ' - ' + (HUB.monthLabel || '') + ', ' + (w.section || 'Teksty'),
                 '',
-                (w.title || 'Tekst') + ': ' + r.ok + '/' + r.total + ' pkt',
+                (w.article ? w.article + '\n' : '') + (w.title || 'Tekst') + ': ' + r.ok + '/' + r.total + ' pkt',
                 'Próba nr ' + r.attempts
             ];
             if (r.answered < r.total) lines.push('Niedokończone: odpowiedzi na ' + r.answered + ' z ' + r.total + ' pytań');
@@ -7145,8 +8534,7 @@ video {
             return lines.join('\n');
         }
         function wqApply(w, flatIdx) {
-            var box = el('hub-writing-list');
-            if (!box) return;
+            var box = document;
             var st = wqSt(w);
             (w.questions || []).forEach(function (q, qi) {
                 var btns = box.querySelectorAll('[data-wq="' + flatIdx + '"][data-wq-q="' + qi + '"]');
@@ -7180,6 +8568,48 @@ video {
                     encodeURIComponent((HUB.student || '') + ' - ' + (w.title || 'Teksty')) + '&body=' + encoded);
             }
             wqStatus(flatIdx, none ? 'Odpowiedz na przynajmniej jedno pytanie, żeby było co wysłać.' : '', false);
+            if (String(flatIdx).charAt(0) === 'm') mediaShareRefresh();
+        }
+        // Artykuly/Wideo: jeden panel wysylki na dole zakladki (klucz "mall"),
+        // wiadomosc zbiera wszystkie quizy z co najmniej jedna odpowiedzia.
+        function mediaQuizKeys() {
+            return Object.keys(WQ_REG).filter(function (k) { return /^m\d+$/.test(k); })
+                .sort(function (a, b) { return parseInt(a.slice(1), 10) - parseInt(b.slice(1), 10); });
+        }
+        function mediaAnswered() {
+            return mediaQuizKeys().reduce(function (n, k) { return n + wqResult(WQ_REG[k]).answered; }, 0);
+        }
+        function mediaShareText() {
+            var lines = [(HUB.student || 'Uczeń') + ' - ' + (HUB.monthLabel || '') + ', Artykuły/Wideo'];
+            var lastArticle = null;
+            mediaQuizKeys().forEach(function (k) {
+                var w = WQ_REG[k], r = wqResult(w);
+                if (!r.answered) return;
+                if (w.article !== lastArticle) { lines.push('', w.article); lastArticle = w.article; }
+                lines.push(w.title + ': ' + r.ok + '/' + r.total + ' pkt, próba nr ' + r.attempts);
+                if (r.answered < r.total) lines.push('Niedokończone: odpowiedzi na ' + r.answered + ' z ' + r.total + ' pytań');
+                if (r.wrong.length) lines.push('Błędy: ' + r.wrong.map(function (x) {
+                    return x.num + ' (zaznaczone ' + x.picked + ', poprawna ' + x.key + ')';
+                }).join(', '));
+            });
+            return lines.join('\n');
+        }
+        function mediaShareRefresh() {
+            var none = !mediaAnswered();
+            var encoded = encodeURIComponent(mediaShareText());
+            var num = (HUB.teacherWhatsApp || '').replace(/[^0-9]/g, '');
+            var wa = document.querySelector('[data-wq-wa="mall"]');
+            var mail = document.querySelector('[data-wq-mail="mall"]');
+            if (wa) {
+                wa.classList.toggle('is-disabled', none);
+                wa.setAttribute('href', none ? '#' : 'https://wa.me/' + num + '?text=' + encoded);
+            }
+            if (mail) {
+                mail.classList.toggle('is-disabled', none);
+                mail.setAttribute('href', none ? '#' : 'mailto:?subject=' +
+                    encodeURIComponent((HUB.student || '') + ' - Artykuły/Wideo') + '&body=' + encoded);
+            }
+            wqStatus('mall', none ? 'Odpowiedz na przynajmniej jedno pytanie, żeby było co wysłać.' : '', false);
         }
         function wqStatus(flatIdx, msg, warn) {
             var s = document.querySelector('[data-wq-status="' + flatIdx + '"]');
@@ -7220,18 +8650,20 @@ video {
                 navigator.clipboard.writeText(text).then(done).catch(legacy);
             } else legacy();
         }
-        function writingQuestionsHtml(w, flatIdx) {
+        function writingQuestionsHtml(w, flatIdx, noShare) {
             var qs = w.questions || [];
             if (!qs.length) return '';
+            WQ_REG[flatIdx] = w;
             var graded = wqGraded(w).length > 0;
+            var isTf = w.type === 'tf';
             var html = '<div class="hub-wq">' + qs.map(function (q, qi) {
                 var opts = (q.options || []).map(function (opt, oi) {
                     return '<button type="button" class="hub-ex-opt" data-wq="' + flatIdx + '" data-wq-q="' + qi + '" data-wq-opt="' + oi + '">' +
-                        escapeHtml(String.fromCharCode(65 + oi) + '. ' + opt) + '</button>';
+                        escapeHtml(isTf ? opt : String.fromCharCode(65 + oi) + '. ' + opt) + '</button>';
                 }).join('');
                 return '<div class="hub-wq-item" style="margin:14px 0 0">' +
                     '<p style="margin:0 0 6px;font-weight:700">' + (qi + 1) + '. ' + escapeHtml(q.q) + '</p>' +
-                    (opts ? '<div style="display:flex;flex-direction:column;align-items:flex-start;gap:4px">' + opts + '</div>' : '') +
+                    (opts ? '<div style="display:flex;flex-direction:' + (isTf ? 'row;flex-wrap:wrap' : 'column') + ';align-items:flex-start;gap:' + (isTf ? '8px' : '4px') + '">' + opts + '</div>' : '') +
                     '</div>';
             }).join('') + '</div>';
             if (!graded) return html;
@@ -7240,7 +8672,12 @@ video {
                 '<span class="hub-ex-score" style="white-space:normal" data-wq-score="' + flatIdx + '"></span>' +
                 '<button type="button" class="hub-ex-btn" data-wq-reset="' + flatIdx + '">&#8635; Resetuj</button>' +
                 '</div>' +
-                '<div class="hub-share">' +
+                (noShare ? '' : wqSharePanelHtml(flatIdx));
+        }
+        // Panel wysylki. W Artykulach/Wideo jest jeden, na samym dole zakladki
+        // (klucz "mall", wszystkie quizy w jednej wiadomosci), zamiast pod kazdym quizem.
+        function wqSharePanelHtml(flatIdx) {
+            return '<div class="hub-share">' +
                 '<div class="hub-share-actions">' +
                 (typeof navigator.share === 'function'
                     ? '<button type="button" class="hub-cta hub-cta-alt" data-wq-native="' + flatIdx + '">&#128228; Udost&#281;pnij</button>' : '') +
@@ -7251,6 +8688,48 @@ video {
                 '<p class="hub-share-status" data-wq-status="' + flatIdx + '"></p>' +
                 '<textarea class="hub-share-fallback hidden" data-wq-fallback="' + flatIdx + '" readonly></textarea>' +
                 '</div>';
+        }
+
+        // Klikniecia w pytania i przyciski pod nimi (Teksty i Artykuly/Wideo).
+        // Zwraca true, gdy klik nalezal do pytan.
+        function wqHandleClick(e) {
+            var wqBtn = e.target.closest ? e.target.closest('[data-wq]') : null;
+            if (wqBtn) {
+                var wKey = wqBtn.getAttribute('data-wq');
+                var wItem = WQ_REG[wKey];
+                var wqi = parseInt(wqBtn.getAttribute('data-wq-q'), 10);
+                if (!wItem || !wItem.questions[wqi]) return true;
+                var wst = wqSt(wItem);
+                if (wst.picks[wqi] !== undefined) return true;   // pytanie juz zablokowane
+                wst.picks[wqi] = parseInt(wqBtn.getAttribute('data-wq-opt'), 10);
+                wqSave();
+                wqApply(wItem, wKey);
+                return true;
+            }
+            var wqAct = e.target.closest ? e.target.closest('[data-wq-reset],[data-wq-copy],[data-wq-native]') : null;
+            if (!wqAct) return false;
+            wqAct.blur();
+            var aKey = wqAct.getAttribute('data-wq-reset') || wqAct.getAttribute('data-wq-copy') || wqAct.getAttribute('data-wq-native');
+            var aItem = WQ_REG[aKey];
+            if (!aItem && aKey !== 'mall') return true;
+            if (wqAct.hasAttribute('data-wq-reset')) {
+                wqReset(aItem);
+                wqSave();
+                wqApply(aItem, aKey);
+                return true;
+            }
+            var aAnswered = aKey === 'mall' ? mediaAnswered() : wqResult(aItem).answered;
+            var aText = aKey === 'mall' ? mediaShareText() : wqShareText(aItem);
+            if (!aAnswered) { wqStatus(aKey, 'Odpowiedz na przynajmniej jedno pytanie, żeby było co wysłać.', true); return true; }
+            if (wqAct.hasAttribute('data-wq-copy')) { wqCopy(aKey, aText); return true; }
+            try {
+                navigator.share({ text: aText }).catch(function () {
+                    wqStatus(aKey, 'Udostępnianie anulowane - spróbuj WhatsApp albo Kopiuj tekst.', false);
+                });
+            } catch (err) {
+                wqStatus(aKey, 'Udostępnianie niedostępne - użyj WhatsApp albo Kopiuj tekst.', false);
+            }
+            return true;
         }
 
         function renderWriting() {
@@ -7280,12 +8759,12 @@ video {
                         (w.title ? '<p class="hub-pron-word">' + escapeHtml(w.title) + '</p>' : '') +
                         player +
                         '<p class="hub-msg-body">' + escapeAndLinkify(w.text || '') + '</p>' +
-                        writingQuestionsHtml(w, flatIdx) +
+                        writingQuestionsHtml(w, 'w' + flatIdx) +
                         '</div></div>';
                 }).join('');
                 return '<details class="hub-lesson-group"' + (isLast ? ' open' : '') + '>' + head + body + '</details>';
             }).join('');
-            WRITING.forEach(function (w, wi) { if (wqGraded(w).length) wqApply(w, wi); });
+            WRITING.forEach(function (w, wi) { if (wqGraded(w).length) wqApply(w, 'w' + wi); });
             var wResetAll = el('hub-writing-reset-all');
             if (wResetAll && WRITING.some(function (w) { return wqGraded(w).length; })) {
                 wResetAll.classList.remove('hidden');
@@ -7295,49 +8774,14 @@ video {
                     WRITING.forEach(function (w, wi) {
                         if (!wqGraded(w).length) return;
                         wqReset(w);
-                        wqApply(w, wi);
+                        wqApply(w, 'w' + wi);
                     });
                     wqSave();
                 });
             }
 
             box.addEventListener('click', function (e) {
-                var wqBtn = e.target.closest ? e.target.closest('[data-wq]') : null;
-                if (wqBtn) {
-                    var wIdx = parseInt(wqBtn.getAttribute('data-wq'), 10);
-                    var wItem = WRITING[wIdx];
-                    var wqi = parseInt(wqBtn.getAttribute('data-wq-q'), 10);
-                    if (!wItem || !wItem.questions[wqi]) return;
-                    var wst = wqSt(wItem);
-                    if (wst.picks[wqi] !== undefined) return;   // pytanie juz zablokowane
-                    wst.picks[wqi] = parseInt(wqBtn.getAttribute('data-wq-opt'), 10);
-                    wqSave();
-                    wqApply(wItem, wIdx);
-                    return;
-                }
-                var wqAct = e.target.closest ? e.target.closest('[data-wq-reset],[data-wq-copy],[data-wq-native]') : null;
-                if (wqAct) {
-                    wqAct.blur();
-                    var aIdx = parseInt(wqAct.getAttribute('data-wq-reset') || wqAct.getAttribute('data-wq-copy') || wqAct.getAttribute('data-wq-native'), 10);
-                    var aItem = WRITING[aIdx];
-                    if (!aItem) return;
-                    if (wqAct.hasAttribute('data-wq-reset')) {
-                        wqReset(aItem);
-                        wqSave();
-                        wqApply(aItem, aIdx);
-                        return;
-                    }
-                    if (!wqResult(aItem).answered) { wqStatus(aIdx, 'Odpowiedz na przynajmniej jedno pytanie, żeby było co wysłać.', true); return; }
-                    if (wqAct.hasAttribute('data-wq-copy')) { wqCopy(aIdx, wqShareText(aItem)); return; }
-                    try {
-                        navigator.share({ text: wqShareText(aItem) }).catch(function () {
-                            wqStatus(aIdx, 'Udostępnianie anulowane - spróbuj WhatsApp albo Kopiuj tekst.', false);
-                        });
-                    } catch (err) {
-                        wqStatus(aIdx, 'Udostępnianie niedostępne - użyj WhatsApp albo Kopiuj tekst.', false);
-                    }
-                    return;
-                }
+                if (wqHandleClick(e)) return;
                 var playPauseBtn = e.target.closest ? e.target.closest('[data-hub-writing-playpause]') : null;
                 var stopBtn = e.target.closest ? e.target.closest('[data-hub-writing-stop]') : null;
                 var rateBtn = e.target.closest ? e.target.closest('[data-hub-writing-rate]') : null;
