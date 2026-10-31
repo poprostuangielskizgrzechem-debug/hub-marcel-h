@@ -2565,6 +2565,8 @@ video {
             .hub-ex-title::before { content: '\25B8'; display: inline-block; margin-right: 8px; color: var(--hub-muted); transition: transform .15s; }
             .hub-ex-card[open] .hub-ex-title::before { transform: rotate(90deg); }
             .hub-ex-score { font-size: 13px; font-weight: 700; color: #1e5aae; background: #e9f0fa; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+            .hub-ex-speak { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
+            .hub-ex-speak-btn { border: 1px solid var(--hub-border, #d1d5db); background: transparent; color: inherit; border-radius: 999px; padding: 6px 14px; font-size: 16px; font-weight: 600; cursor: pointer; }
             .hub-ex-instr { color: var(--hub-muted); font-size: 14px; line-height: 1.5; margin: 10px 0 12px; white-space: pre-line; }
             .hub-ex-item { padding: 11px 0; border-top: 1px solid var(--hub-line); line-height: 1.9; font-size: 15.5px; }
             .hub-ex-item:first-of-type { border-top: none; }
@@ -5355,7 +5357,7 @@ video {
                                 {
                                         "text": "[gap]",
                                         "answers": [
-                                                "tour"
+                                                "exhibition"
                                         ],
                                         "choices": [
                                                 [
@@ -8244,6 +8246,14 @@ video {
             });
         }
 
+        // Glosniczki pod tytulem cwiczenia (ex.speakWords), jeden delegowany listener.
+        document.addEventListener('click', function (e) {
+            var btn = e.target.closest ? e.target.closest('[data-ex-speak]') : null;
+            if (!btn) return;
+            btn.blur();
+            speak(btn.getAttribute('data-ex-speak'), 'en-GB');
+        });
+
         // ==========================================
         // Teksty (dawniej Pisanie/Mowienie)
         // ==========================================
@@ -8489,10 +8499,22 @@ video {
             mom: 'mum', math: 'maths', aluminum: 'aluminium', jewelry: 'jewellery', plow: 'plough', donut: 'doughnut',
             catalog: 'catalogue', dialog: 'dialogue', analog: 'analogue', skeptical: 'sceptical', mustache: 'moustache',
             gotten: 'got', fall: 'autumn', apartment: 'flat', vacation: 'holiday', cookie: 'biscuit', cookies: 'biscuits' };
+        // Skroty wpisane bez apostrofu (hasnt, its, im): po usunieciu apostrofow obie
+        // strony rozwijaja sie tak samo. Pomijamy slowa, ktore same sa slowami (were,
+        // well, id, hell, shell, wed). "its" zawsze = it is, takze zaimek dzierzawczy,
+        // co po obu stronach daje to samo.
+        var EX_CONTR = { isnt: 'is not', arent: 'are not', wasnt: 'was not', werent: 'were not',
+            hasnt: 'has not', havent: 'have not', hadnt: 'had not', doesnt: 'does not', dont: 'do not',
+            didnt: 'did not', cant: 'cannot', wont: 'will not', couldnt: 'could not', shouldnt: 'should not',
+            wouldnt: 'would not', mustnt: 'must not', im: 'i am', ive: 'i have', youve: 'you have',
+            weve: 'we have', theyve: 'they have', youre: 'you are', theyre: 'they are',
+            its: 'it is', hes: 'he is', shes: 'she is', thats: 'that is', whats: 'what is', theres: 'there is' };
         function exLoose(x) {
-            return exNorm(x).replace(/can't/g, 'cannot').replace(/won't/g, 'will not').replace(/n't/g, ' not')
+            return exNorm(x).replace(/'s got\b/g, ' has got').replace(/\b(it|he|she|that|there|what|who)s got\b/g, '$1 has got')
+                .replace(/can't/g, 'cannot').replace(/won't/g, 'will not').replace(/n't/g, ' not')
                 .replace(/'re /g, ' are ').replace(/'ve /g, ' have ').replace(/'m /g, ' am ').replace(/'ll /g, ' will ').replace(/'/g, '').replace(/[.,!?;:"()“”„–—-]+/g, ' ')
                 .replace(/\s+/g, ' ').trim().split(' ').map(function (w) {
+                    if (EX_CONTR[w]) return EX_CONTR[w];
                     if (EX_US_UK[w]) return EX_US_UK[w];
                     return w.replace(/^([a-z]*(col|fav|flav|hon|hum|lab|neighb|beh|harb|rum|vap|arm|rig|vig))or(s|ed|ing|ite|ites|ful|able|ly|hood)?$/, '$1our$3')
                         .replace(/([a-z]{2})(i|y)z(e|es|ed|ing|ation|ations)$/, '$1$2s$3')
@@ -8813,6 +8835,9 @@ video {
                     '<summary class="hub-ex-head"><span class="hub-ex-title">' + escapeHtml(ex.title || '') + '</span>' +
                     (isSelf ? '' : '<span class="hub-ex-score" data-ex-score="' + exIdx + '" data-ex-total="' + gapTotal + '">&ndash; / ' + gapTotal + '</span>') +
                     '</summary>' +
+                    (ex.speakWords && ex.speakWords.length ? '<div class="hub-ex-speak">' + ex.speakWords.map(function (w) {
+                        return '<button type="button" class="hub-ex-speak-btn" data-ex-speak="' + escapeHtml(w) + '">&#128264; ' + escapeHtml(w) + '</button>';
+                    }).join('') + '</div>' : '') +
                     (ex.instructions ? '<p class="hub-ex-instr">' + escapeHtml(ex.instructions) + '</p>' : '') +
                     (ex.passage ? '<div class="hub-ex-passage">' + escapeHtml(ex.passage).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>') + '</div>' : '') +
                     (ex.figure ? '<div class="hub-ex-figure">' + ex.figure + '</div>' : '') +
